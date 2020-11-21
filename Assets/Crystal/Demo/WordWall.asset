@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e8b467afd61fa2499bede9f2a31532f, type: 3}
+  m_Name: WordWall
+  m_EditorClassIdentifier: 
+  BPM: 98
+  minTracks: 2
+  maxTracks: 4
+  musicStems:
+  - {fileID: 8300000, guid: d6f4dcbb263f83945ad3b5da30291ea9, type: 3}
+  - {fileID: 8300000, guid: 845362ecd539593409639089963b73eb, type: 3}
+  - {fileID: 8300000, guid: f5ada27cfa352584890d71efeaa729de, type: 3}
+  - {fileID: 8300000, guid: df1144e050187de4a9268a5e66faa405, type: 3}
