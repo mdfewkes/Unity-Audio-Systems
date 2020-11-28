@@ -2,14 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AudioManagerRJ : MonoBehaviour
+public class MDFAudioManager : MonoBehaviour
 {
-
-	public static AudioManagerRJ Instance;
+	public static MDFAudioManager Instance;
 	public GameObject audioSourcePrefab;
 
-	void Awake()
-	{
+	void Awake() {
 		if (Instance == null)
 		{
 			Instance = this;
