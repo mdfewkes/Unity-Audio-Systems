@@ -10,14 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ef275d04b9667254387e5ca2d301b200, type: 3}
-  m_Name: TestInstrument
+  m_Name: TestInstrument 4
   m_EditorClassIdentifier: 
   map:
   - lowKey: 0
-    highKey: 60
-    rootKey: 60
-    clip: {fileID: 8300000, guid: d34cec46fd2137a41a5e8b589130a97e, type: 3}
-  - lowKey: 60
     highKey: 127
     rootKey: 60
-    clip: {fileID: 8300000, guid: d48db89ff421846459ef44b822603da0, type: 3}
+    clip: {fileID: 8300000, guid: baeb0132295431d40962d0852d02aba6, type: 3}

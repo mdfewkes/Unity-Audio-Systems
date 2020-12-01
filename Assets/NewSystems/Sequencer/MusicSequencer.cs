@@ -24,6 +24,7 @@ public class MusicSequencer : MonoBehaviour
 	private int ticksUntilNextBeat;
 	private double startTime = 0;
 	private double currentTime = 0;
+	private double currentDuration = 0;
 
 	private List<SamplerVoice> voices;
 	private int numberOfVoices = 16;
@@ -85,9 +86,10 @@ public class MusicSequencer : MonoBehaviour
 
 	void Update()
 	{
-		currentTime = AudioSettings.dspTime + Time.deltaTime;
+		currentTime = AudioSettings.dspTime;
+		currentDuration = currentTime - startTime;
 
-		if (currentTime >= nextTickTime)
+		if (currentTime + Time.deltaTime >= nextTickTime)
 		{
 			nextTickTime += tickLength;
 			ticksUntilNextBeat--;
@@ -108,11 +110,11 @@ public class MusicSequencer : MonoBehaviour
 				switch (thisEvent.type)
 				{
 					case SequenceEvent.EventType.Note:
-						instruments[(int)thisEvent.parameter1].Play(thisEvent.time + AudioSettings.dspTime, thisEvent.parameter2, thisEvent.parameter3, thisEvent.parameter4);
+						instruments[(int)thisEvent.parameter1].Play(thisEvent.time - currentDuration + currentTime, thisEvent.parameter2, thisEvent.parameter3, thisEvent.parameter4);
 						break;
 					case SequenceEvent.EventType.LoopPoint:
-						startTime = thisEvent.time + AudioSettings.dspTime;
-						currentEventIndex = 0;
+						startTime = thisEvent.time - currentDuration + currentTime;
+						currentEventIndex = -1;
 						break;
 				}
 

@@ -203,7 +203,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &871460510
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -219,24 +219,24 @@ MonoBehaviour:
   steps:
   - Active: 1
     Volume: 0.5
-    MidiNoteNumber: 72
+    MidiNoteNumber: 60
     BaseNote: 60
-    Clip: {fileID: 8300000, guid: 980f0e6a54e8e5344af254c6690a715d, type: 3}
+    Clip: {fileID: 8300000, guid: baeb0132295431d40962d0852d02aba6, type: 3}
   - Active: 1
     Volume: 0.5
     MidiNoteNumber: 60
     BaseNote: 60
-    Clip: {fileID: 8300000, guid: 980f0e6a54e8e5344af254c6690a715d, type: 3}
+    Clip: {fileID: 8300000, guid: baeb0132295431d40962d0852d02aba6, type: 3}
   - Active: 1
     Volume: 0.5
     MidiNoteNumber: 60
     BaseNote: 60
-    Clip: {fileID: 8300000, guid: 980f0e6a54e8e5344af254c6690a715d, type: 3}
+    Clip: {fileID: 8300000, guid: 06d7195e8bd0efd45b154ecc34623a77, type: 3}
   - Active: 1
     Volume: 0.5
     MidiNoteNumber: 60
     BaseNote: 60
-    Clip: {fileID: 8300000, guid: 980f0e6a54e8e5344af254c6690a715d, type: 3}
+    Clip: {fileID: 8300000, guid: baeb0132295431d40962d0852d02aba6, type: 3}
 --- !u!4 &871460511
 Transform:
   m_ObjectHideFlags: 0
@@ -459,21 +459,24 @@ MonoBehaviour:
   beatsPerMinute: 120
   ticksPerBeat: 4
   instruments:
-  - {fileID: 11400000, guid: 1e542b9bcf2598e4b8da59383c8a7f56, type: 2}
+  - {fileID: 11400000, guid: 0b38e08b2ef9bf445a50c8d37229bdd4, type: 2}
+  - {fileID: 11400000, guid: 44c4e227c237ad041a91c1d50a21a112, type: 2}
+  - {fileID: 11400000, guid: 6b5ffe42a5b0e394f9b236e064416327, type: 2}
+  - {fileID: 11400000, guid: eb9911e70b8944b41abcba1fbd885cef, type: 2}
   currentSequence:
     tempo: 120
     events:
     - type: 0
       time: 0
-      parameter1: 0
+      parameter1: 2
       parameter2: 1
       parameter3: 60
       parameter4: 1
     - type: 0
       time: 1
-      parameter1: 0
+      parameter1: 2
       parameter2: 1
-      parameter3: 48
+      parameter3: 67
       parameter4: 1
     - type: 1
       time: 2
