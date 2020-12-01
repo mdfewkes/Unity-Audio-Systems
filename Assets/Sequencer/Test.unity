@@ -121,6 +121,136 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &85811769
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 85811772}
+  - component: {fileID: 85811771}
+  - component: {fileID: 85811770}
+  m_Layer: 0
+  m_Name: EventSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &85811770
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 85811769}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalAxis: Horizontal
+  m_VerticalAxis: Vertical
+  m_SubmitButton: Submit
+  m_CancelButton: Cancel
+  m_InputActionsPerSecond: 10
+  m_RepeatDelay: 0.5
+  m_ForceModuleActive: 0
+--- !u!114 &85811771
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 85811769}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_FirstSelected: {fileID: 0}
+  m_sendNavigationEvents: 1
+  m_DragThreshold: 10
+--- !u!4 &85811772
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 85811769}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &871460509
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 871460511}
+  - component: {fileID: 871460510}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &871460510
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 871460509}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 804176fc223f65249b34f254c59ad245, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  steps:
+  - Active: 1
+    Volume: 0.5
+    MidiNoteNumber: 72
+    BaseNote: 60
+    Clip: {fileID: 8300000, guid: 980f0e6a54e8e5344af254c6690a715d, type: 3}
+  - Active: 1
+    Volume: 0.5
+    MidiNoteNumber: 60
+    BaseNote: 60
+    Clip: {fileID: 8300000, guid: 980f0e6a54e8e5344af254c6690a715d, type: 3}
+  - Active: 1
+    Volume: 0.5
+    MidiNoteNumber: 60
+    BaseNote: 60
+    Clip: {fileID: 8300000, guid: 980f0e6a54e8e5344af254c6690a715d, type: 3}
+  - Active: 1
+    Volume: 0.5
+    MidiNoteNumber: 60
+    BaseNote: 60
+    Clip: {fileID: 8300000, guid: 980f0e6a54e8e5344af254c6690a715d, type: 3}
+--- !u!4 &871460511
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 871460509}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &889110904
 GameObject:
   m_ObjectHideFlags: 0
@@ -325,8 +455,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba20fdfe4e065714483efeb62cad9148, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  testPlay: 0
-  testSample: {fileID: 8300000, guid: ab4daba280710f24c9e00888048aa569, type: 3}
+  isPlaying: 0
+  beatsPerMinute: 120
+  ticksPerBeat: 4
+  instruments:
+  - {fileID: 11400000, guid: 1e542b9bcf2598e4b8da59383c8a7f56, type: 2}
+  currentSequence:
+    tempo: 120
+    events:
+    - type: 0
+      time: 0
+      parameter1: 0
+      parameter2: 1
+      parameter3: 60
+      parameter4: 1
+    - type: 0
+      time: 1
+      parameter1: 0
+      parameter2: 1
+      parameter3: 48
+      parameter4: 1
+    - type: 1
+      time: 2
+      parameter1: 0
+      parameter2: 0
+      parameter3: 0
+      parameter4: 0
 --- !u!4 &1594642046
 Transform:
   m_ObjectHideFlags: 0
