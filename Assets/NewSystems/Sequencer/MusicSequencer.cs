@@ -25,6 +25,7 @@ public class MusicSequencer : MonoBehaviour
 	private double startTime = 0;
 	private double currentTime = 0;
 	private double currentDuration = 0;
+	private double startDelay = 0.25;
 
 	private List<SamplerVoice> voices;
 	private int numberOfVoices = 16;
@@ -97,6 +98,18 @@ public class MusicSequencer : MonoBehaviour
 			if (ticksUntilNextBeat <= 0)
 			{
 				//dude, the beat
+				if (nextSequence != null)
+				{
+					currentSequence = nextSequence;
+					nextSequence = null;
+					currentEventIndex = 0;
+					startTime = AudioSettings.dspTime;
+					beatsPerMinute = currentSequence.tempo;
+					tickLength = 60.0 / beatsPerMinute / ticksPerBeat;
+					nextTickTime = AudioSettings.dspTime + tickLength;
+					ticksUntilNextBeat = ticksPerBeat;
+
+				}
 
 				OnBeat?.Invoke();
 
@@ -114,8 +127,8 @@ public class MusicSequencer : MonoBehaviour
 						break;
 					case SequenceEvent.EventType.LoopPoint:
 						startTime = thisEvent.time - currentDuration + currentTime;
-						currentEventIndex = -1;
-						break;
+						currentEventIndex = 0;
+						return;
 				}
 
 				currentEventIndex++;
@@ -162,11 +175,12 @@ public class MusicSequencer : MonoBehaviour
 	{
 		if (currentSequence == null && nextSequence == null) return;
 		if (nextSequence != null) currentSequence = nextSequence;
+		nextSequence = null;
 
-		startTime = AudioSettings.dspTime;
+		startTime = AudioSettings.dspTime + startDelay;
 		beatsPerMinute = currentSequence.tempo;
 		tickLength = 60.0 / beatsPerMinute / ticksPerBeat;
-		nextTickTime = AudioSettings.dspTime + tickLength;
+		nextTickTime = AudioSettings.dspTime + tickLength + startDelay;
 		ticksUntilNextBeat = ticksPerBeat;
 
 		isPlaying = true;
@@ -201,10 +215,9 @@ public class SamplerVoice : MonoBehaviour
 	public float startTime;
 	public float releaseTime = 0.15f;
 
-	public void Play(double startTime, AudioClip clip, float volume = 0.75f, float pitch = 1f, float duration = -1, float release = 0.15f)
+	public void Play(double startTime, AudioClip clip, float volume, float pitch, float duration)
 	{
 		StopAllCoroutines();
-		releaseTime = release;
 
 		source.clip = clip;
 		source.pitch = pitch;

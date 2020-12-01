@@ -219,22 +219,22 @@ MonoBehaviour:
   steps:
   - Active: 1
     Volume: 0.5
-    MidiNoteNumber: 60
+    MidiNoteNumber: 48
     BaseNote: 60
     Clip: {fileID: 8300000, guid: baeb0132295431d40962d0852d02aba6, type: 3}
   - Active: 1
     Volume: 0.5
-    MidiNoteNumber: 60
+    MidiNoteNumber: 52
     BaseNote: 60
     Clip: {fileID: 8300000, guid: baeb0132295431d40962d0852d02aba6, type: 3}
   - Active: 1
     Volume: 0.5
-    MidiNoteNumber: 60
+    MidiNoteNumber: 55
     BaseNote: 60
-    Clip: {fileID: 8300000, guid: 06d7195e8bd0efd45b154ecc34623a77, type: 3}
+    Clip: {fileID: 8300000, guid: baeb0132295431d40962d0852d02aba6, type: 3}
   - Active: 1
     Volume: 0.5
-    MidiNoteNumber: 60
+    MidiNoteNumber: 52
     BaseNote: 60
     Clip: {fileID: 8300000, guid: baeb0132295431d40962d0852d02aba6, type: 3}
 --- !u!4 &871460511
@@ -468,16 +468,22 @@ MonoBehaviour:
     events:
     - type: 0
       time: 0
-      parameter1: 2
+      parameter1: 0
       parameter2: 1
       parameter3: 60
       parameter4: 1
     - type: 0
       time: 1
-      parameter1: 2
+      parameter1: 0
       parameter2: 1
       parameter3: 67
-      parameter4: 1
+      parameter4: 0.15
+    - type: 0
+      time: 1
+      parameter1: 0
+      parameter2: 1
+      parameter3: 64
+      parameter4: 0.15
     - type: 1
       time: 2
       parameter1: 0

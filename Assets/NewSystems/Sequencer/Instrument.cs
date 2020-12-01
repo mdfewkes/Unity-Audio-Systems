@@ -36,6 +36,6 @@ public class Instrument : ScriptableObject
 
 		Note thisNote = map[noteToMap];
 
-		MusicSequencer.Instance.Play(startTime, thisNote.clip, volume, MusicMathUtils.MidiNoteToPitch(MidiNoteNumber, thisNote.rootKey));
+		MusicSequencer.Instance.Play(startTime, thisNote.clip, volume, MusicMathUtils.MidiNoteToPitch(MidiNoteNumber, thisNote.rootKey), duration);
 	}
 }
