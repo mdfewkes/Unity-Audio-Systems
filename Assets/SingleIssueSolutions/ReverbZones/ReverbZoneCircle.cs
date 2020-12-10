@@ -11,7 +11,7 @@ public class ReverbZoneCircle : ReverbZone
 		return (Vector3.Distance(gameObject.transform.position, target.transform.position) < radius);
 	}
 
-	void OnDrawGizmos()
+	void OnDrawGizmosSelected()
 	{
 		Gizmos.DrawWireSphere(gameObject.transform.position, radius);
 	}

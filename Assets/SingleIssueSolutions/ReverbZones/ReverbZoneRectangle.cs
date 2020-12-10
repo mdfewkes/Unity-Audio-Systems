@@ -15,7 +15,7 @@ public class ReverbZoneRectangle : ReverbZone
 			    target.transform.position.y < gameObject.transform.position.y + width / 2);
 	}
 
-	void OnDrawGizmos()
+	void OnDrawGizmosSelected()
 	{
 		Vector3 theSize = new Vector3(width, height, 0f);
 		Gizmos.DrawWireCube(gameObject.transform.position, theSize);
