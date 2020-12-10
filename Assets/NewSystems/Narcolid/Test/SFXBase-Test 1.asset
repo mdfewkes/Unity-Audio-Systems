@@ -13,8 +13,5 @@ MonoBehaviour:
   m_Name: SFXBase-Test 1
   m_EditorClassIdentifier: 
   clip:
-  - {fileID: 8300000, guid: d34cec46fd2137a41a5e8b589130a97e, type: 3}
-  - {fileID: 8300000, guid: 4a00bf1cc269d934c829056b18537dfa, type: 3}
-  - {fileID: 8300000, guid: 05bc69f2bfdd2a04c9a22dfc92ff98fe, type: 3}
-  - {fileID: 8300000, guid: 76e8ac9200616be41901a8ecadd2e1b3, type: 3}
-  - {fileID: 8300000, guid: 89e8460d8ca77b94f916f47d765edd06, type: 3}
+  - {fileID: 8300000, guid: f75d614c495f5754f81a2c2e280a4608, type: 3}
+  - {fileID: 8300000, guid: d907753eeee2ede4789cc484b9c9b941, type: 3}
