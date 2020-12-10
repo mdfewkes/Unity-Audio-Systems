@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AudioManager : MonoBehaviour
+public class NarcolidAudioManager : MonoBehaviour
 {
 
-	public static AudioManager Instance;
+	public static NarcolidAudioManager Instance;
 	public GameObject audioSourcePrefab;
 
-	public List<int> tuning;
-	public int root;
+	public List<float> tuning;
+	public float root;
 
 	void Awake()
 	{
@@ -41,21 +41,23 @@ public class AudioManager : MonoBehaviour
 
 	//--// Music Functions
 
-	public void GenerateTuning(List<int> newTuning, int newRoot)
+	public void GenerateTuning(List<float> newTuning, float newRoot)
 	{
 		if (newTuning.Count <= 0) return;
 
 		root = newRoot;
 
-		tuning = new List<int>();
-		foreach (int value in newTuning)
+		tuning = new List<float>();
+		for (int i = 0; i < newTuning.Count; i++)
 		{
-			tuning.Add(value);
+			if (newTuning[i] > 12f) newTuning[i] -= 12f;
+			if (newTuning[i] < 0f) newTuning[i] += 12f;
+			tuning.Add(newTuning[i]);
 		}
 
 		tuning.Sort();
-		tuning.Insert(0, tuning[tuning.Count - 1] - 1200);
-		tuning.Add(tuning[1] + 1200);
+		tuning.Insert(0, tuning[tuning.Count - 1] - 12);
+		tuning.Add(tuning[1] + 12);
 
 	}
 

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TestScript : MonoBehaviour
 {
-	public SFXBase sound;
+	public NarcolidSFXBase sound;
 
 	private void OnMouseDown()
 	{

@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class TestTunning : MonoBehaviour
 {
-	public List<int> tunning;
-	public int root;
+	public List<float> tunning;
+	public float root;
 
 	private void OnMouseDown()
 	{
-		AudioManager.Instance.GenerateTuning(tunning, root);
+		NarcolidAudioManager.Instance.GenerateTuning(tunning, root);
 	}
 }
