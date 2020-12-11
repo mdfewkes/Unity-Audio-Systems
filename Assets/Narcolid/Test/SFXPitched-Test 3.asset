@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8caf071e8d884464582f60704ed33701, type: 3}
-  m_Name: SFXPitched-Test 2
+  m_Name: SFXPitched-Test 3
   m_EditorClassIdentifier: 
   clips:
-  - {fileID: 8300000, guid: 3447a179888181741b11910ce7aa8aa5, type: 3}
-  - {fileID: 8300000, guid: dd7b2d30f93d1c04e9e7c9659bd34efa, type: 3}
-  tuning: 3.5
+  - {fileID: 8300000, guid: f75d614c495f5754f81a2c2e280a4608, type: 3}
+  - {fileID: 8300000, guid: d907753eeee2ede4789cc484b9c9b941, type: 3}
+  tuning: 8.5
   clipListAndTuning:
   - clips:
     - {fileID: 8300000, guid: 3447a179888181741b11910ce7aa8aa5, type: 3}

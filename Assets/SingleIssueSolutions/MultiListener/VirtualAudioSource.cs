@@ -5,34 +5,49 @@ using UnityEngine;
 public class VirtualAudioSource : MonoBehaviour
 {
 	public GameObject target;
-	public VirtualListener listener;
+	public Vector3 targetPosition;
+	public VirtualAudioListener listener;
 
 	void LateUpdate()
 	{
-		if (target == null) gameObject.SetActive(false);
-		if (listener == null) listener = GetClosestListener();
+		if (target == null && targetPosition == null  || listener == null)
+		{
+			gameObject.SetActive(false);
+			return;
+		}
+		if (target != null)
+		{
+			targetPosition = target.transform.position;
+		}
 
-			transform.position = Quaternion.Inverse(listener.transform.rotation) * (target.transform.position - listener.transform.position) + VirtualListener.masterListener.transform.position;
+		transform.position = Quaternion.Inverse(listener.transform.rotation) * (targetPosition - listener.transform.position) + VirtualAudioListener.masterListener.transform.position;
 	}
 
-	public VirtualListener GetClosestListener()
+	public VirtualAudioListener GetClosestListener()
 	{
 		int indexToReturn = 0;
 		float shortestDistance = Mathf.Infinity;
-		for (int i = 0; i < VirtualListener.Listeners.Count; i++)
+		for (int i = 0; i < VirtualAudioListener.Listeners.Count; i++)
 		{
-			if ((target.transform.position - VirtualListener.Listeners[i].transform.position).sqrMagnitude < shortestDistance)
+			if ((targetPosition - VirtualAudioListener.Listeners[i].transform.position).sqrMagnitude < shortestDistance)
 			{
 				indexToReturn = i;
-				shortestDistance = (target.transform.position - VirtualListener.Listeners[i].transform.position).sqrMagnitude;
+				shortestDistance = (targetPosition - VirtualAudioListener.Listeners[i].transform.position).sqrMagnitude;
 			}
 		}
 
-		return VirtualListener.Listeners[indexToReturn];
+		return VirtualAudioListener.Listeners[indexToReturn];
 	}
 
-	public void CalculateClosestListener()
+	public void CalculateClosestListener(GameObject newTarget = null)
 	{
-		GetClosestListener();
+		if (newTarget) target = newTarget;
+		listener = GetClosestListener();
+	}
+
+	public void CalculateClosestListener(Vector3 newTargetPosition)
+	{
+		targetPosition = newTargetPosition;
+		listener = GetClosestListener();
 	}
 }

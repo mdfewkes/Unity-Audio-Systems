@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VirtualListener : MonoBehaviour
+public class VirtualAudioListener : MonoBehaviour
 {
 	public static AudioListener masterListener;
-	public static List<VirtualListener> Listeners = new List<VirtualListener>();
+	public static List<VirtualAudioListener> Listeners = new List<VirtualAudioListener>();
 
 	void OnEnable()
 	{

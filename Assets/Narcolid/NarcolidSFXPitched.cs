@@ -13,10 +13,15 @@ public class NarcolidSFXPitched : NarcolidSFXTuned
 	}
 
 	public List<AudioListAndPitches> clipListAndTuning;
-
 	public float relativeTuning;
 
-	public override AudioSource Play()
+	public override AudioSource Play(GameObject target) { return base.Play(target, SelectBasePitch()); }
+
+	public override AudioSource Play(Vector3 target) { return base.Play(target, SelectBasePitch()); }
+
+	public override AudioSource Play() { return base.Play(SelectBasePitch()); }
+
+	protected float SelectBasePitch()
 	{
 		tuning = 24f;
 
@@ -31,8 +36,6 @@ public class NarcolidSFXPitched : NarcolidSFXTuned
 			}
 		}
 
-		Debug.Log(basePitch);
-
-		return base.Play(basePitch);
+		return basePitch;
 	}
 }

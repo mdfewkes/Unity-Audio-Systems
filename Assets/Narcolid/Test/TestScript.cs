@@ -10,7 +10,7 @@ public class TestScript : MonoBehaviour
 	{
 		if (sound != null)
 		{
-			sound.Play();
+			sound.Play(gameObject);
 		}
 	}
 }

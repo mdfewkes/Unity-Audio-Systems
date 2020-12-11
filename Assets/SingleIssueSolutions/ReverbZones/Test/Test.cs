@@ -5,18 +5,18 @@ using UnityEngine.Audio;
 
 public class Test : MonoBehaviour
 {
-    public bool isin = false;
+    //public bool isin = false;
     public AudioMixerGroup defaultGroup;
 
     void Update()
     {
-        isin = false;
+        //isin = false;
         GetComponent<AudioSource>().outputAudioMixerGroup = defaultGroup;
         foreach (ReverbZone zone in ReverbZone.currentZones)
 		{
             if (zone.IsOverlapping(gameObject))
 			{
-                isin = true;
+                //isin = true;
                 GetComponent<AudioSource>().outputAudioMixerGroup = zone.group;
 			}
         }

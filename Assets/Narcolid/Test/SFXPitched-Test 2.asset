@@ -25,4 +25,4 @@ MonoBehaviour:
     - {fileID: 8300000, guid: f75d614c495f5754f81a2c2e280a4608, type: 3}
     - {fileID: 8300000, guid: d907753eeee2ede4789cc484b9c9b941, type: 3}
     tuning: 8.5
-  relativeTuning: 7
+  relativeTuning: 3.5

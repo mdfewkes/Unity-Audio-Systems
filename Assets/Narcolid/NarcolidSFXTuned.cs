@@ -7,15 +7,13 @@ public class NarcolidSFXTuned : NarcolidSFXBase
 {
 	public float tuning;
 
-	public override AudioSource Play()
-	{
-		return NarcolidAudioManager.Instance.PlaySoundSFX(SelectClip(), SelectPitch());
-	}
+	public override AudioSource Play(GameObject target) { return NarcolidAudioManager.Instance.PlaySoundSFX(target, SelectClip(), SelectPitch()); }
+	public override AudioSource Play(Vector3 target) { return NarcolidAudioManager.Instance.PlaySoundSFX(target, SelectClip(), SelectPitch()); }
+	public override AudioSource Play() 	{ return NarcolidAudioManager.Instance.PlaySoundSFX(SelectClip(), SelectPitch()); }
 
-	public AudioSource Play(float targetPitch)
-	{
-		return NarcolidAudioManager.Instance.PlaySoundSFX(SelectClip(), SelectPitch(targetPitch));
-	}
+	public AudioSource Play(GameObject target, float basePitch) { return NarcolidAudioManager.Instance.PlaySoundSFX(target, SelectClip(), SelectPitch(basePitch)); }
+	public AudioSource Play(Vector3 target, float basePitch) { return NarcolidAudioManager.Instance.PlaySoundSFX(target, SelectClip(), SelectPitch(basePitch)); }
+	public AudioSource Play(float basePitch) { return NarcolidAudioManager.Instance.PlaySoundSFX(SelectClip(), SelectPitch(basePitch)); }
 
 	protected float SelectPitch()
 	{
@@ -28,10 +26,7 @@ public class NarcolidSFXTuned : NarcolidSFXBase
 				newPitchOffset = interval - tuning;
 			}
 		}
-
 		float newPitch = Mathf.Pow(2, (newPitchOffset / 12f));
-
-		Debug.Log(newPitch);
 
 		return newPitch;
 	}
@@ -49,10 +44,7 @@ public class NarcolidSFXTuned : NarcolidSFXBase
 				foundPitch = interval - targetPitch;
 			}
 		}
-
 		float newPitch = Mathf.Pow(2, (newPitchOffset / 12f));
-
-		//Debug.Log(newPitchOffset + " " + newPitch);
 
 		return newPitch;
 	}
