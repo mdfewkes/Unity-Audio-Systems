@@ -14,6 +14,8 @@ public class NarcolidAudioManager : MonoBehaviour
 	public List<float> tuning;
 	public float root;
 
+	private List<AudioSource> loopingSources = new List<AudioSource>();
+
 	void Awake()
 	{
 		if (Instance == null) Instance = this;
@@ -22,7 +24,7 @@ public class NarcolidAudioManager : MonoBehaviour
 
 	//--//-----SFX Functions
 	//Plays spatialized, in world sounds
-	public AudioSource PlaySoundSFX(Vector3 positionToPlayAt, AudioClip clip, float pitch = 1f, float volume = 1f)
+	public AudioSource PlaySoundSFX(Vector3 positionToPlayAt, AudioClip clip, float pitch = 1f, float volume = 1f, bool looping = false)
 	{
 		GameObject targetGameObject = Instantiate(audioSourcePrefabSFX);
 		targetGameObject.GetComponent<VirtualAudioSource>().CalculateClosestListener(positionToPlayAt);
@@ -30,6 +32,7 @@ public class NarcolidAudioManager : MonoBehaviour
 		freshAudioSource.gameObject.transform.parent = gameObject.transform;
 		freshAudioSource.volume = volume;
 		freshAudioSource.pitch = pitch;
+		freshAudioSource.loop = looping;
 		freshAudioSource.clip = clip;
 
 		ReverbZone.AssignOutputMixerGroupToAudioSource(freshAudioSource, positionToPlayAt);
@@ -40,17 +43,17 @@ public class NarcolidAudioManager : MonoBehaviour
 		return freshAudioSource;
 	}
 
-	public AudioSource PlaySoundSFX(GameObject objectToPlayOn, AudioClip clip, float pitch = 1f, float volume = 1f)
+	public AudioSource PlaySoundSFX(GameObject objectToPlayOn, AudioClip clip, float pitch = 1f, float volume = 1f, bool looping = false)
 	{
-		AudioSource freshAudioSource = PlaySoundSFX(objectToPlayOn.transform.position, clip, pitch, volume);
+		AudioSource freshAudioSource = PlaySoundSFX(objectToPlayOn.transform.position, clip, pitch, volume, looping);
 		freshAudioSource.gameObject.GetComponent<VirtualAudioSource>().target = objectToPlayOn;
 
 		return freshAudioSource;
 	}
 
-	public AudioSource PlaySoundSFX(AudioClip clip, float pitch = 1f, float volume = 1f)
+	public AudioSource PlaySoundSFX(AudioClip clip, float pitch = 1f, float volume = 1f, bool looping = false)
 	{
-		return PlaySoundSFX(gameObject.transform.position, clip, pitch, volume);
+		return PlaySoundSFX(gameObject.transform.position, clip, pitch, volume, looping);
 	}
 
 
@@ -66,19 +69,6 @@ public class NarcolidAudioManager : MonoBehaviour
 
 		freshAudioSource.Play();
 		Destroy(freshAudioSource.gameObject, freshAudioSource.clip.length * pitch + 0.1f);
-
-		return freshAudioSource;
-	}
-
-	public AudioSource PlaySoundVO(AudioClip clip)
-	{
-		GameObject targetGameObject = Instantiate(audioSourcePrefabVO);
-		AudioSource freshAudioSource = targetGameObject.GetComponent<AudioSource>();
-		freshAudioSource.gameObject.transform.parent = gameObject.transform;
-		freshAudioSource.clip = clip;
-
-		freshAudioSource.Play();
-		Destroy(freshAudioSource.gameObject, freshAudioSource.clip.length + 0.1f);
 
 		return freshAudioSource;
 	}

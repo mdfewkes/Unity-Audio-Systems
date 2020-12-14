@@ -11,8 +11,8 @@ public class ReverbZoneRectangle : ReverbZone
 	{
 		return (target.x > gameObject.transform.position.x - width / 2 &&
 				target.x < gameObject.transform.position.x + width / 2 &&
-				target.y > gameObject.transform.position.y - width / 2 &&
-				target.y < gameObject.transform.position.y + width / 2);
+				target.y > gameObject.transform.position.y - height / 2 &&
+				target.y < gameObject.transform.position.y + height / 2);
 	}
 
 	public override bool IsOverlapping(GameObject target)

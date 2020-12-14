@@ -7,13 +7,13 @@ public class NarcolidSFXTuned : NarcolidSFXBase
 {
 	public float tuning;
 
-	public override AudioSource Play(GameObject target) { return NarcolidAudioManager.Instance.PlaySoundSFX(target, SelectClip(), SelectPitch()); }
-	public override AudioSource Play(Vector3 target) { return NarcolidAudioManager.Instance.PlaySoundSFX(target, SelectClip(), SelectPitch()); }
+	public override AudioSource Play(GameObject target) { return NarcolidAudioManager.Instance.PlaySoundSFX(target, SelectClip(), SelectPitch(), looping: loop); }
+	public override AudioSource Play(Vector3 target) { return NarcolidAudioManager.Instance.PlaySoundSFX(target, SelectClip(), SelectPitch(), looping: loop); }
 	public override AudioSource Play() 	{ return NarcolidAudioManager.Instance.PlaySoundSFX(SelectClip(), SelectPitch()); }
 
-	public AudioSource Play(GameObject target, float basePitch) { return NarcolidAudioManager.Instance.PlaySoundSFX(target, SelectClip(), SelectPitch(basePitch)); }
-	public AudioSource Play(Vector3 target, float basePitch) { return NarcolidAudioManager.Instance.PlaySoundSFX(target, SelectClip(), SelectPitch(basePitch)); }
-	public AudioSource Play(float basePitch) { return NarcolidAudioManager.Instance.PlaySoundSFX(SelectClip(), SelectPitch(basePitch)); }
+	public AudioSource Play(GameObject target, float basePitch) { return NarcolidAudioManager.Instance.PlaySoundSFX(target, SelectClip(), SelectPitch(basePitch), looping: loop); }
+	public AudioSource Play(Vector3 target, float basePitch) { return NarcolidAudioManager.Instance.PlaySoundSFX(target, SelectClip(), SelectPitch(basePitch), looping: loop); }
+	public AudioSource Play(float basePitch) { return NarcolidAudioManager.Instance.PlaySoundSFX(SelectClip(), SelectPitch(basePitch), looping: loop); }
 
 	protected float SelectPitch()
 	{
