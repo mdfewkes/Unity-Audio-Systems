@@ -13,27 +13,27 @@ public class InterfaceRLC : MonoBehaviour
 
 	public void PlayNone()
 	{
-		CrystalMusicEventManager.Instance.Transition(null);
+		CrystalMusicEventManager.Instance.Transition(null, true);
 	}
 
 	public void Play1()
 	{
-		CrystalMusicEventManager.Instance.Transition(song1);
+		CrystalMusicEventManager.Instance.Transition(song1, true);
 	}
 
 	public void Play2()
 	{
-		CrystalMusicEventManager.Instance.Transition(song2);
+		CrystalMusicEventManager.Instance.Transition(song2, true);
 	}
 
 	public void Play3()
 	{
-		CrystalMusicEventManager.Instance.Transition(song3);
+		CrystalMusicEventManager.Instance.Transition(song3, true);
 	}
 
 	public void Play4()
 	{
-		CrystalMusicEventManager.Instance.Transition(song4);
+		CrystalMusicEventManager.Instance.Transition(song4, true);
 	}
 
 	public void Increase()
