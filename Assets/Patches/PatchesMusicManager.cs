@@ -186,7 +186,7 @@ public class PatchesMusicManager : MonoBehaviour {
 	}
 
 	private void SetNextBeat() {
-		nextBeat = activeSource.time % (60 / activeTrack.bpm) + Time.time + 1 - Time.deltaTime;
+		nextBeat = activeSource.time % (60 / activeTrack.bpm) + Time.time + (60 / activeTrack.bpm) - Time.deltaTime;
 	}
 
 	IEnumerator FadeOutAndStop(AudioSource source, float fadeTime) {

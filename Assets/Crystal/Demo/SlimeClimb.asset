@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e8b467afd61fa2499bede9f2a31532f, type: 3}
   m_Name: SlimeClimb
   m_EditorClassIdentifier: 
-  BPM: 25.5
+  BPM: 51
   minTracks: 3
   maxTracks: 6
   musicStems:

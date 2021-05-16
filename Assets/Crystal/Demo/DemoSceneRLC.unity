@@ -1590,7 +1590,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &460781719
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2745,6 +2745,7 @@ MonoBehaviour:
   variationFrequencyInSeconds: 30
   variationFadeTimeInSeconds: 2
   transitionFadeTimeInSeconds: 0.15
+  transitionNow: 0
   currentTrack: {fileID: 0}
 --- !u!4 &1169666378
 Transform:

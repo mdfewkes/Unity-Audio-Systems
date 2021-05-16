@@ -18,6 +18,7 @@ public class CrystalMusicEventManager : MonoBehaviour {
 	[SerializeField]
 	private float variationFrequencyInSeconds = 20f;
 	private float nextVariationTime = 0f;
+	private float currentTime = 0f;
 	[SerializeField]
 	private float variationFadeTimeInSeconds = 0.25f;
 
@@ -46,13 +47,14 @@ public class CrystalMusicEventManager : MonoBehaviour {
 	}
 
 	void Update() {
+		currentTime = Time.time;
 		if (Time.time > nextVariationTime && currentTrack != null) {
 			Variation();
 		}
 	}
 
 	public void Transition(CrystalMusicTrack newTrack, bool imediateTransition = false) {
-		transitionNow = imediateTransition;
+		//transitionNow = imediateTransition;
 		if (currentTrack != null && newTrack != null) {
 			minLayers = newTrack.minTracks;
 			maxLayers = newTrack.maxTracks;
@@ -84,13 +86,13 @@ public class CrystalMusicEventManager : MonoBehaviour {
 
 		if (running < runningLayers) {
 			StartCoroutine(FadeIn(currentSources[bringIn], variationFadeTimeInSeconds));
-			currentSources[bringIn].gameObject.name = "(On***) " + currentSources[bringIn].clip.name;
+			currentSources[bringIn].gameObject.name = "(*On*) " + currentSources[bringIn].clip.name;
 		} else if (running > runningLayers) {
 			StartCoroutine(FadeOut(currentSources[bringOut], variationFadeTimeInSeconds));
 			currentSources[bringOut].gameObject.name = "(Off) " + currentSources[bringOut].clip.name;
 		} else {
 			StartCoroutine(FadeIn(currentSources[bringIn], variationFadeTimeInSeconds));
-			currentSources[bringIn].gameObject.name = "(On**) " + currentSources[bringIn].clip.name;
+			currentSources[bringIn].gameObject.name = "(*On*) " + currentSources[bringIn].clip.name;
 			StartCoroutine(FadeOut(currentSources[bringOut], variationFadeTimeInSeconds));
 			currentSources[bringOut].gameObject.name = "(Off) " + currentSources[bringOut].clip.name;
 		}
@@ -117,7 +119,7 @@ public class CrystalMusicEventManager : MonoBehaviour {
 		for (int i = 0; i < runningLayers; i++) {
 			int bringIn = FindUnusedNumber();
 			currentSources[bringIn].volume = 1f;
-			currentSources[bringIn].gameObject.name = "(On*) " + currentSources[i].clip.name;
+			currentSources[bringIn].gameObject.name = "(*On*) " + currentSources[i].clip.name;
 		}
 
 		nextVariationTime = Time.time + variationFrequencyInSeconds + SecondsToNextBeat() - variationFadeTimeInSeconds;
@@ -158,7 +160,7 @@ public class CrystalMusicEventManager : MonoBehaviour {
 	private int TracksRunning() {
 		int running = 0;
 		for (int i = 0; i < currentListLenght; i++) {
-			if (currentSources[i].volume == 1f) running++;
+			if (currentSources[i].volume >= 0.5f) running++;
 		}
 
 		return running;
@@ -200,6 +202,8 @@ public class CrystalMusicEventManager : MonoBehaviour {
 		float startVolume = source.volume;
 
 		while (startTime + fadeTime > Time.time) {
+			if (source == null) yield break;
+
 			currentTime = Time.time - startTime;
 
 			source.volume = Mathf.Lerp(startVolume, 0f, currentTime / fadeTime);
@@ -216,6 +220,8 @@ public class CrystalMusicEventManager : MonoBehaviour {
 		float startVolume = source.volume;
 
 		while (startTime + fadeTime > Time.time) {
+			if (source == null) yield break;
+
 			currentTime = Time.time - startTime;
 
 			source.volume = Mathf.Lerp(startVolume, 0f, currentTime / fadeTime);
@@ -231,6 +237,8 @@ public class CrystalMusicEventManager : MonoBehaviour {
 		float startVolume = source.volume;
 
 		while (startTime + fadeTime > Time.time) {
+			if (source == null) yield break;
+
 			currentTime = Time.time - startTime;
 
 			source.volume = Mathf.Lerp(startVolume, 1f, currentTime / fadeTime);
@@ -248,6 +256,8 @@ public class CrystalMusicEventManager : MonoBehaviour {
 		}
 
 		for (int i = 0; i < currentListLenght; i++) {
+			if (currentSources[i] == null) continue;
+
 			StartCoroutine(FadeOutAndStop(currentSources[i], transitionFadeTimeInSeconds));
 			currentSources[i].gameObject.name = "(Old) " + currentSources[i].clip.name;
 		}
