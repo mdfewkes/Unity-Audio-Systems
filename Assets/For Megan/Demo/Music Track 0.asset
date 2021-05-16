@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 828c4ad6fa5a87f4dbc549b369c0f3be, type: 3}
+  m_Name: Music Track 0
+  m_EditorClassIdentifier: 
+  baseTrack: {fileID: 8300000, guid: e9f1c9ee4e139db46b1d9b2d4b2fc117, type: 3}
+  lowHealth: {fileID: 8300000, guid: eeac07b015c0b8040ab15aede9ddc130, type: 3}
+  highIntensity: {fileID: 8300000, guid: 34048550a558db64ca3a331890e0a616, type: 3}
+  bpm: 42.5
+  startTime: 2.823
+  endTime: 25.411
+  outTimes:
+  - 14.117
