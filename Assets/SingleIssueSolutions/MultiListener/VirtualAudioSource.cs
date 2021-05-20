@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VirtualAudioSource : MonoBehaviour
+public class SIVirtualAudioSource : MonoBehaviour
 {
 	public GameObject target;
 	public Vector3 targetPosition;
-	public VirtualAudioListener listener;
+	public SIVirtualAudioListener listener;
 
 	void LateUpdate()
 	{
@@ -23,20 +23,20 @@ public class VirtualAudioSource : MonoBehaviour
 		transform.position = Quaternion.Inverse(listener.transform.rotation) * (targetPosition - listener.transform.position) + VirtualAudioListener.masterListener.transform.position;
 	}
 
-	public VirtualAudioListener GetClosestListener()
+	public SIVirtualAudioListener GetClosestListener()
 	{
 		int indexToReturn = 0;
 		float shortestDistance = Mathf.Infinity;
-		for (int i = 0; i < VirtualAudioListener.Listeners.Count; i++)
+		for (int i = 0; i < SIVirtualAudioListener.Listeners.Count; i++)
 		{
-			if ((targetPosition - VirtualAudioListener.Listeners[i].transform.position).sqrMagnitude < shortestDistance)
+			if ((targetPosition - SIVirtualAudioListener.Listeners[i].transform.position).sqrMagnitude < shortestDistance)
 			{
 				indexToReturn = i;
-				shortestDistance = (targetPosition - VirtualAudioListener.Listeners[i].transform.position).sqrMagnitude;
+				shortestDistance = (targetPosition - SIVirtualAudioListener.Listeners[i].transform.position).sqrMagnitude;
 			}
 		}
 
-		return VirtualAudioListener.Listeners[indexToReturn];
+		return SIVirtualAudioListener.Listeners[indexToReturn];
 	}
 
 	public void CalculateClosestListener(GameObject newTarget = null)

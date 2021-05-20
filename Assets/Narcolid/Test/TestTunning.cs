@@ -9,6 +9,6 @@ public class TestTunning : MonoBehaviour
 
 	private void OnMouseDown()
 	{
-		NarcolidAudioManager.Instance.GenerateTuning(tunning, root);
+		MusicManager.Instance.GenerateTuning(tunning, root);
 	}
 }

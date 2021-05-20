@@ -12,7 +12,7 @@ public class Test : MonoBehaviour
     {
         //isin = false;
         GetComponent<AudioSource>().outputAudioMixerGroup = defaultGroup;
-        foreach (ReverbZone zone in ReverbZone.currentZones)
+        foreach (SIReverbZone zone in SIReverbZone.currentZones)
 		{
             if (zone.IsOverlapping(gameObject))
 			{
