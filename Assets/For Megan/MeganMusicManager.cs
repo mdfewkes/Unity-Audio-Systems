@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MusicManager : MonoBehaviour {
-	public static MusicManager Instance;
+public class MeganMusicManager : MonoBehaviour {
+	public static MeganMusicManager Instance;
 
 	[SerializeField]
 	private AudioSource musicSourcePrefab;
 	
 	[SerializeField]
-	private MusicTrack currentTrack;
-	private MusicTrack scheduledTrack;
+	private MeganMusicTrack currentTrack;
+	private MeganMusicTrack scheduledTrack;
 	private AudioSource currentSource;
 	private bool playing = false;
 	
@@ -36,9 +36,9 @@ public class MusicManager : MonoBehaviour {
 	}
 
 	void Update() {
-		currentTime = currentSource.time;
-
 		if (playing) {
+			currentTime = currentSource.time;
+
 			if (scheduledTrack != null //A track is scheduled
 				&& currentTime >= nextOutTime - scheduledTrack.startTime - trackBufferTime //And we are past the bufferTime+PickupTime for the next outTime
 				&& currentTime + scheduledTrack.startTime <= nextOutTime) { //And the pickupTime is less than the remaining transition time
@@ -61,7 +61,7 @@ public class MusicManager : MonoBehaviour {
 
 				//Schedule the FadeOut of the old music and the start of the new music
 				float timeDifference = nextOutTime - currentTime;
-				StartCoroutine(WaitAndFadeOutAndStop(currentSource, nextOutTime - currentTime, trackFadeTime));
+				if (endTime != nextOutTime) StartCoroutine(WaitAndFadeOutAndStop(currentSource, nextOutTime - currentTime, trackFadeTime));
 				StartClip(currentTrack.GetClip(state), nextOutTime - currentTrack.startTime - currentTime);
 
 				//Truncate the start of the new music to fit in our transition time
@@ -91,7 +91,7 @@ public class MusicManager : MonoBehaviour {
 	}
 
 	//--//--Interface for music control
-	public void PlayTrack(MusicTrack newTrack) {
+	public void PlayTrack(MeganMusicTrack newTrack) {
 
 		if (playing && currentTrack != newTrack) { //Schedule the new track
 			scheduledTrack = newTrack;

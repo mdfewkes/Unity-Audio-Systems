@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Music Track", menuName = "Music Track")]
-public class MusicTrack : ScriptableObject {
+public class MeganMusicTrack : ScriptableObject {
 	public AudioClip baseTrack;
 	public AudioClip lowHealth;
 	public AudioClip highIntensity;
@@ -13,11 +13,11 @@ public class MusicTrack : ScriptableObject {
 	public float endTime;
 	public List<float> outTimes;
 
-	public AudioClip GetClip(MusicManager.TrackState state) {
+	public AudioClip GetClip(MeganMusicManager.TrackState state) {
 		switch(state) {
-			case MusicManager.TrackState.HighIntensity:
+			case MeganMusicManager.TrackState.HighIntensity:
 				return highIntensity;
-			case MusicManager.TrackState.LowHealth:
+			case MeganMusicManager.TrackState.LowHealth:
 				return lowHealth;
 			default:
 				return baseTrack;
