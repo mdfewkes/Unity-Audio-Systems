@@ -6,6 +6,7 @@ using UnityEngine.Audio;
 public class AudioManager : MonoBehaviour {
 
 	public static AudioManager Instance;
+	const float FadeTime = 0.15f;
 	public AudioSource audioSourcePrefabSFX;
 	public AudioSource audioSourcePrefabUI;
 	public AudioMixerGroup defaultSFXGroup;
@@ -22,18 +23,17 @@ public class AudioManager : MonoBehaviour {
 			//--//--Update source Listener
 			VirtualAudioSource vas = source.GetComponent<VirtualAudioSource>();
 			if (vas.listener != vas.GetClosestListener()) {
-				Debug.Log("New Listener");
 				VirtualAudioSource freshVAS = Instantiate(vas);
 				freshVAS.transform.parent = transform;
 				freshVAS.listener = vas.listener;
 				Destroy(freshVAS.GetComponentInChildren<SFXSequenceComponent>());
 				freshVAS.GetComponent<AudioSource>().time = source.time;
-				StartCoroutine(FadeOutAndStop(freshVAS.GetComponent<AudioSource>(), 0.15f));
+				StartCoroutine(FadeOutAndStop(freshVAS.GetComponent<AudioSource>(), FadeTime));
 
 				vas.listener = vas.GetClosestListener();
 				float targetVolume = source.volume;
 				source.volume = 0f;
-				StartCoroutine(FadeTo(source, targetVolume, 0.15f));
+				StartCoroutine(FadeTo(source, targetVolume, FadeTime));
 			}
 
 			//--//--Update source ReverbZone
@@ -42,9 +42,7 @@ public class AudioManager : MonoBehaviour {
 	}
 
 	//--//-----SFX Functions
-
-	//Play spatialized sounds
-	public AudioSource PlaySoundSFX(Vector3 positionToPlayAt, AudioClip clip, float pitch = 1f, float volume = 1f, bool looping = false) {
+	public AudioSource PlaySoundSFX(Vector3 positionToPlayAt, AudioClip clip, float pitch = 1f, float volume = 1f, bool looping = false, float delay = 0f) {
 		AudioSource freshAudioSource = Instantiate(audioSourcePrefabSFX);
 		var vas = freshAudioSource.GetComponent<VirtualAudioSource>();
 		vas.targetPosition = positionToPlayAt;
@@ -58,31 +56,33 @@ public class AudioManager : MonoBehaviour {
 
 		ReverbZone.AssignOutputMixerGroupToAudioSource(freshAudioSource, positionToPlayAt);
 
-		freshAudioSource.Play();
+		freshAudioSource.PlayDelayed(delay);
 		if (looping) loopingSources.Add(freshAudioSource);
-		else Destroy(freshAudioSource.gameObject, freshAudioSource.clip.length/pitch + 0.1f);
+		else Destroy(freshAudioSource.gameObject, freshAudioSource.clip.length/pitch + delay);
 
 		return freshAudioSource;
 	}
 
-	public AudioSource PlaySoundSFX(GameObject objectToPlayOn, AudioClip clip, float pitch = 1f, float volume = 1f, bool looping = false) {
-		AudioSource freshAudioSource = PlaySoundSFX(objectToPlayOn.transform.position, clip, pitch, volume, looping);
+	public AudioSource PlaySoundSFX(GameObject objectToPlayOn, AudioClip clip, float pitch = 1f, float volume = 1f, bool looping = false, float delay = 0f) {
+		AudioSource freshAudioSource = PlaySoundSFX(objectToPlayOn.transform.position, clip, pitch, volume, looping, delay);
 		freshAudioSource.gameObject.GetComponent<VirtualAudioSource>().target = objectToPlayOn;
 
 		return freshAudioSource;
 	}
 
-	public AudioSource PlaySoundSFX(AudioClip clip, float pitch = 1f, float volume = 1f, bool looping = false) {
-		return PlaySoundSFX(Camera.main.transform.position, clip, pitch, volume, looping);
+	public AudioSource PlaySoundSFX(AudioClip clip, float pitch = 1f, float volume = 1f, bool looping = false, float delay = 0f) {
+		return PlaySoundSFX(Camera.main.transform.position, clip, pitch, volume, looping, delay);
 	}
 
-	public void StopSoundSFX(AudioSource source) {
-		source.Stop();
+	public void StopSoundSFX(AudioSource source, float fadeTime = FadeTime) {
+		StartCoroutine(FadeOutAndStop(source, fadeTime));
 		loopingSources.Remove(source);
-		Destroy(source.gameObject);
 	}
 
-	//Plays an unspatialized sound
+	public AudioSource SwapSoundSFX () {
+		return null;
+	}
+	
 	public AudioSource PlaySoundUI(AudioClip clip, float pitch = 1f, float volume = 1f) {
 		AudioSource freshAudioSource = Instantiate(audioSourcePrefabUI);
 		freshAudioSource.gameObject.transform.parent = gameObject.transform;

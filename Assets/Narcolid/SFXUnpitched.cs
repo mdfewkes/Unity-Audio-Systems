@@ -8,9 +8,9 @@ public class SFXUnpitched : SFXBase {
 	public float pitchWindow = 0.2f;
 	public float volumeWindow = 0.3f;
 
-	public override AudioSource Play(GameObject target) { return AudioManager.Instance.PlaySoundSFX(target, SelectClip(), SelectPitch(), SeletVolume(), loop); }
-	public override AudioSource Play(Vector3 target) { return AudioManager.Instance.PlaySoundSFX(target, SelectClip(), SelectPitch(), SeletVolume(), loop); }
-	public override AudioSource Play() { return AudioManager.Instance.PlaySoundSFX(SelectClip(), SelectPitch(), SeletVolume(), loop); }
+	public override AudioSource Play(GameObject target, float delay = 0) { return AudioManager.Instance.PlaySoundSFX(target, SelectClip(), SelectPitch(), SeletVolume(), loop, delay: delay); }
+	public override AudioSource Play(Vector3 target, float delay = 0) { return AudioManager.Instance.PlaySoundSFX(target, SelectClip(), SelectPitch(), SeletVolume(), loop, delay: delay); }
+	public override AudioSource Play(float delay = 0) { return AudioManager.Instance.PlaySoundSFX(SelectClip(), SelectPitch(), SeletVolume(), loop, delay: delay); }
 
 	protected float SelectPitch() {
 		return 1f + Random.Range(-pitchWindow/2, pitchWindow/2);

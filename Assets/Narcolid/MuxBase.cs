@@ -8,14 +8,18 @@ using UnityEditor;
 public class MuxBase : ScriptableObject {
 	public AudioClip clip;
 	public float bpm = 120f;
-	public float startTime;
-	public float endTime;
-	public bool loop;
+	public float trackStartTime;
+	public float trackEndTime;
+	public bool loop = true;
 	public List<float> outTimes;
 	public List<ChordChange> changes;
 
-	public virtual AudioSource PlayTrack() {
-		return MusicManager.Instance.StartMux(clip, this);
+	public virtual void PrepTrack() {
+		return;
+	}
+
+	public virtual void PlayTrack() {
+		MusicManager.Instance.ScheduleMux(this);
 	}
 
 }

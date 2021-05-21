@@ -13,9 +13,18 @@ public class MusicManager : MonoBehaviour {
 	public List<float> tuning;
 	public float root;
 
-	public static AudioSource currentSource;
-	public static MuxBase currentTrack;
-	public bool playing = false;
+	public AudioSource currentSource;
+	public MuxBase currentTrack;
+	public MuxBase scheduledTrack;
+	
+	public AudioClip clip;
+	public float bpm = 120f;
+	public float trackStartTime = 0f;
+	public float trackEndTime = Mathf.Infinity;
+	public bool loop = false;
+	public List<float> outTimes = new List<float>();
+	public List<ChordChange> changes = new List<ChordChange>();
+	
 	public float trackPickupTime = 0f;
 	public int currentChordIndex = 0;
 
@@ -24,9 +33,16 @@ public class MusicManager : MonoBehaviour {
 	public float nextQuarterBeat = 0f;
 	public float nextHalfBeat = 0f;
 	public float nextBeat = 0f;
-	public float nextChordChange = 0f;
-	public float nextOutTime = 0f;
-	public float endTime = 0f;
+	public float nextChordChange = Mathf.Infinity;
+	public float nextOutTime = Mathf.Infinity;
+	public float endTime = Mathf.Infinity;
+
+	public Action<float> CueBeat = (float delay) => { };
+	public Action<float> CueHalfBeat = (float delay) => { };
+	public Action<float> CueQuarterBeat = (float delay) => { };
+	public Action<float> CueChordChange = (float delay) => { };
+	public Action<float> CueOutTime = (float delay) => { };
+	public Action<float> CueEndTime = (float delay) => { };
 
 	public bool cuedQuarterBeat = false;
 	public bool cuedHalfBeat = false;
@@ -42,98 +58,105 @@ public class MusicManager : MonoBehaviour {
 	public Action OnOutTime = () => { };
 	public Action OnEndTime = () => { };
 
-	public Action<float> QueBeat = (float delay) => { };
-	public Action<float> QueHalfBeat = (float delay) => { };
-	public Action<float> QueQuarterBeat = (float delay) => { };
-	public Action<float> QueChordChange = (float delay) => { };
-	public Action<float> QueOutTime = (float delay) => { };
-	public Action<float> QueEndTime = (float delay) => { };
-
-	void Start() {
+	void Awake() {
 		if (Instance == null) Instance = this;
 		else Destroy(gameObject);
 	}
 
+	void Start() {
+		CueChordChange += HandleChordChange;
+		CueOutTime += HandleOutTime;
+		CueEndTime += HandleEndTime;
+	}
+
+	void OnDestroy() {
+		CueChordChange -= HandleChordChange;
+		CueOutTime -= HandleOutTime;
+		CueEndTime -= HandleEndTime;
+	}
+
 	void Update() {
-		if (playing) {
-			if (currentSource) currentTime = currentSource.time;
-			else currentTime = Time.time - startTime;
+		if (currentSource) currentTime = currentSource.time;
+		else currentTime = Time.unscaledTime - startTime;
 
-			//Quarter beat
-			if (currentTime >= nextQuarterBeat - BufferTime/4 && !cuedQuarterBeat) {
-				cuedQuarterBeat = true;
-				QueQuarterBeat(nextQuarterBeat - currentTime- BufferTime);
+		//Quarter beat
+		if (currentTime >= nextQuarterBeat - BufferTime/4 && !cuedQuarterBeat) {
+			cuedQuarterBeat = true;
+			CueQuarterBeat(nextQuarterBeat - currentTime);
 
-			} else if (currentTime >= nextQuarterBeat) {
-				OnQuarterBeat();
-				CalculateNextQuarterBeat();
-			}
+		} else if (currentTime >= nextQuarterBeat) {
+			OnQuarterBeat();
+			CalculateNextQuarterBeat();
+		}
 
-			//Half beat
-			if (currentTime >= nextHalfBeat - BufferTime/2 && !cuedHalfBeat) {
-				cuedHalfBeat = true;
-				QueHalfBeat(nextHalfBeat - currentTime- BufferTime);
+		//Half beat
+		if (currentTime >= nextHalfBeat - BufferTime/2 && !cuedHalfBeat) {
+			cuedHalfBeat = true;
+			CueHalfBeat(nextHalfBeat - currentTime);
 
-			} else if (currentTime >= nextHalfBeat) {
-				OnHalfBeat();
-				CalculateNextHalfBeat();
-			}
+		} else if (currentTime >= nextHalfBeat) {
+			OnHalfBeat();
+			CalculateNextHalfBeat();
+		}
 
-			//Beat
-			if (currentTime >= nextBeat - BufferTime && !cuedBeat) {
-				cuedBeat = true;
-				QueBeat(nextBeat - currentTime- BufferTime);
+		//Beat
+		if (currentTime >= nextBeat - BufferTime && !cuedBeat) {
+			cuedBeat = true;
+			CueBeat(nextBeat - currentTime);
 
-			} else if (currentTime >= nextBeat) {
-				OnBeat();
-				CalculateNextBeat();
-			}
+		} else if (currentTime >= nextBeat) {
+			OnBeat();
+			CalculateNextBeat();
+		}
 
-			//Chord change
-			if (currentTime >= nextChordChange - BufferTime && !cuedChordChange) {
-				cuedChordChange = true;
-				QueChordChange(nextChordChange - currentTime- BufferTime);
+		//Chord change
+		if (currentTime >= nextChordChange - BufferTime && !cuedChordChange) {
+			cuedChordChange = true;
+			CueChordChange(nextChordChange - currentTime);
 
-				GenerateTuning(currentTrack.changes[currentChordIndex].tuning, currentTrack.changes[currentChordIndex].root);
+		} else if (currentTime >= nextChordChange) {
+			OnChordChange();
+			CalculateNextChordChange();
+		}
 
-			} else if (currentTime >= nextChordChange) {
-				OnChordChange();
-				CalculateNextChordChange();
-			}
+		//Out time
+		if (currentTime >= nextOutTime - trackPickupTime - BufferTime && !cuedOutTime) {
+			cuedOutTime = true;
+			CueOutTime(nextQuarterBeat - currentTime);
 
-			//Out time
-			if (currentTime >= nextOutTime - trackPickupTime - BufferTime && !cuedOutTime) {
-				cuedOutTime = true;
-				QueOutTime(nextQuarterBeat - currentTime- BufferTime);
+		} else if (currentTime >= nextOutTime) {
+			OnOutTime();
+			CalculateNextOutTime();
+		}
 
-			} else if (currentTime >= nextOutTime) {
-				OnOutTime();
-				CalculateNextOutTime();
-			}
+		//End time
+		if (currentTime >= endTime - trackPickupTime - BufferTime && !cuedEndTime) {
+			cuedEndTime = true;
+			CueEndTime(endTime - currentTime);
 
-			//End time
-			if (currentTime >= endTime - trackPickupTime - BufferTime && !cuedEndTime) {
-				cuedEndTime = true;
-				QueEndTime(endTime - currentTime- BufferTime);
-
-			} else if (currentTime >= endTime) {
-				OnEndTime();
-				CalculateEndTime();
-			}
-
+		} else if (currentTime >= endTime) {
+			OnEndTime();
+			CalculateEndTime();
 		}
 
 	}
 	
-	//Play a music track
-	public AudioSource StartMux(AudioClip clip, MuxBase newTrack, float delay = 0) {
-		currentTrack = newTrack;
-		currentSource = Instance.StartClip(clip, delay + BufferTime);
+	//MusicManager Interface
+	public void StartMux(MuxBase newTrack, float delay = 0) {
+		newTrack.PrepTrack();
 
-		startTime = Time.time + BufferTime;
-		trackPickupTime = currentTrack.startTime;
-		currentTime = 0f;
-		playing = true;
+		clip = newTrack.clip;
+		bpm = newTrack.bpm;
+		trackStartTime = newTrack.trackStartTime;
+		trackEndTime = newTrack.trackEndTime;
+		loop = newTrack.loop;
+		outTimes = newTrack.outTimes;
+		changes = newTrack.changes;
+
+		currentSource = StartClip(delay);
+		currentTrack = newTrack;
+		scheduledTrack = null;
+		trackPickupTime = trackStartTime;
 
 		CalculateNextBeat();
 		CalculateNextHalfBeat();
@@ -142,26 +165,27 @@ public class MusicManager : MonoBehaviour {
 		CalculateNextOutTime();
 		CalculateEndTime();
 
-		if (currentChordIndex >= 0) GenerateTuning(currentTrack.changes[0].tuning, currentTrack.changes[0].root);
-
-		return currentSource;
+		if (currentChordIndex >= 0 && changes.Count > 0) GenerateTuning(changes[0].tuning, changes[0].root);
 	}
 
-	private AudioSource StartClip(AudioClip clip, float delay = 0) {
-		if (currentSource && endTime != nextOutTime && currentTime < endTime - trackPickupTime - BufferTime)
-			StartCoroutine(WaitAndFadeOutAndStop(currentSource, delay + trackPickupTime, FadeTime));
+	public void ScheduleMux(MuxBase newTrack) {
+		if (currentTrack) {
+			scheduledTrack = newTrack;
+			trackPickupTime = newTrack.trackStartTime;
+		} else {
+			StartMux(newTrack);
+		}
+	}
 
-		if (clip) {
-			AudioSource freshAudioSource = Instantiate(audioSourcePrefabMusic);
-			freshAudioSource.gameObject.transform.parent = gameObject.transform;
-			freshAudioSource.gameObject.name = clip.name;
-			freshAudioSource.clip = clip;
-
-			freshAudioSource.PlayDelayed(delay);
-			Destroy(freshAudioSource.gameObject, freshAudioSource.clip.length);
-
-			return freshAudioSource;
-		} else return null;
+	private void CueMux(MuxBase newTrack, float delay = 0) {
+		if (delay >= BufferTime) {
+			StartMux(newTrack, delay - BufferTime);
+		} else {
+			StartMux(newTrack);
+			StartCoroutine(FadeIn(currentSource, trackStartTime + delay));
+			currentSource.time = trackStartTime + delay;
+			startTime = Time.unscaledTime + delay + BufferTime;
+		}
 	}
 
 	//--//-----Music functions
@@ -172,76 +196,81 @@ public class MusicManager : MonoBehaviour {
 
 		tuning = new List<float>();
 		for (int i = 0; i < newTuning.Count; i++) {
-			if (newTuning[i] >= 12f) newTuning[i] -= 12f;
-			if (newTuning[i] < 0f) newTuning[i] += 12f;
+			while (newTuning[i] >= 12f) newTuning[i] -= 12f;
+			while (newTuning[i] < 0f) newTuning[i] += 12f;
 			tuning.Add(newTuning[i]);
 		}
 
 		tuning.Sort();
-		tuning.Insert(0, tuning[tuning.Count - 1] - 12);
-		tuning.Add(tuning[1] + 12);
+		tuning.Insert(0, tuning[tuning.Count - 1] - 12f);
+		tuning.Add(tuning[1] + 12f);
+	}
+
+	private AudioSource StartClip(float delay = 0) {
+		if (currentSource && endTime != nextOutTime && currentTime < endTime - trackPickupTime - BufferTime)
+			StartCoroutine(WaitAndFadeOutAndStop(currentSource, delay + trackPickupTime, FadeTime));
+
+		startTime = Time.unscaledTime + delay + BufferTime;
+		currentTime = 0f;
+
+		if (clip) {
+			AudioSource freshAudioSource = Instantiate(audioSourcePrefabMusic);
+			freshAudioSource.gameObject.transform.parent = gameObject.transform;
+			freshAudioSource.gameObject.name = clip.name;
+			freshAudioSource.clip = clip;
+
+			freshAudioSource.PlayDelayed(delay + BufferTime);
+			Destroy(freshAudioSource.gameObject, freshAudioSource.clip.length);
+
+			return freshAudioSource;
+		} else return null;
+	}
+
+	private void HandleChordChange(float cueTime) {
+		if (currentChordIndex >= 0 && changes.Count > 0)
+			StartCoroutine(WaitAndGenerateTuning(changes[currentChordIndex].tuning, changes[currentChordIndex].root, cueTime));
+	}
+
+	private void HandleOutTime(float cueTime) {
+		if (scheduledTrack) {
+			CueMux(scheduledTrack, cueTime - trackPickupTime);
+			scheduledTrack = null;
+		}
+	}
+
+	private void HandleEndTime(float cueTime) {
+		StartMux(currentTrack);
+		if (!loop) currentSource.volume = 0f;
 	}
 
 	//--//-----Calculate event times
 
 	private void CalculateNextQuarterBeat() {
-		if (!currentTrack || !playing) {
-			currentTrack = null;
-			playing = false;
-			nextQuarterBeat = Mathf.Infinity;
-			cuedQuarterBeat = false;
-			return;
-		}
-
-		nextQuarterBeat = currentTime - (currentTime % (15f / currentTrack.bpm)) + (15f / currentTrack.bpm);
+		nextQuarterBeat = currentTime - (currentTime % (15f / bpm)) + (15f / bpm);
 		cuedQuarterBeat = false;
 	}
 
 	private void CalculateNextHalfBeat() {
-		if (!currentTrack || !playing) {
-			currentTrack = null;
-			playing = false;
-			nextHalfBeat = Mathf.Infinity;
-			cuedHalfBeat = false;
-			return;
-		}
-
-		nextHalfBeat = currentTime - (currentTime % (30f / currentTrack.bpm)) + (30f / currentTrack.bpm);
+		nextHalfBeat = currentTime - (currentTime % (30f / bpm)) + (30f / bpm);
 		cuedHalfBeat = false;
 	}
 
 	private void CalculateNextBeat() {
-		if (!currentTrack || !playing) {
-			currentTrack = null;
-			playing = false;
-			nextBeat = Mathf.Infinity;
-			cuedBeat = false;
-			return;
-		}
-
-		nextBeat = currentTime  - (currentTime % (60f / currentTrack.bpm)) + (60f / currentTrack.bpm);
+		nextBeat = currentTime  - (currentTime % (60f / bpm)) + (60f / bpm);
 		cuedBeat = false;
 	}
 
 	private void CalculateNextChordChange() {
-		if (!currentTrack || !playing) {
-			currentTrack = null;
-			playing = false;
-			nextChordChange = Mathf.Infinity;
-			cuedChordChange = false;
-			return;
-		}
-
-		if (currentTrack.changes.Count == 0) {
+		if (changes.Count == 0) {
 			nextChordChange = Mathf.Infinity;
 			currentChordIndex = -1;
 			return;
 		}
 
 		bool changed = false;
-		for (int i = currentTrack.changes.Count - 1; i >= 0; i--) {
-			if (currentTrack.changes[i].time > currentTime) {
-				nextChordChange = currentTrack.changes[i].time;
+		for (int i = changes.Count - 1; i >= 0; i--) {
+			if (changes[i].time > currentTime) {
+				nextChordChange = changes[i].time;
 				currentChordIndex = i;
 				changed = true;
 			}
@@ -250,7 +279,7 @@ public class MusicManager : MonoBehaviour {
 		if (!changed) {
 			nextChordChange = Mathf.Infinity;
 
-			if (currentTime < endTime) currentChordIndex = currentTrack.changes.Count - 1;
+			if (currentTime < endTime) currentChordIndex = changes.Count - 1;
 			else currentChordIndex = -1;
 
 		}
@@ -259,28 +288,20 @@ public class MusicManager : MonoBehaviour {
 	}
 
 	private void CalculateNextOutTime() {
-		if (!currentTrack || !playing) {
-			currentTrack = null;
-			playing = false;
-			nextOutTime = Mathf.Infinity;
-			cuedOutTime = false;
-			return;
-		}
-		
-		if (currentTrack.outTimes.Count == 0) {
-			nextOutTime = currentTrack.endTime;
+		if (outTimes.Count == 0) {
+			nextOutTime = trackEndTime;
 			return;
 		}
 		
 		bool changed = false;
-		for (int i = currentTrack.outTimes.Count - 1; i >= 0; i--) {
-			if (currentTrack.outTimes[i] > currentTime) {
-				nextOutTime = currentTrack.outTimes[i];
+		for (int i = outTimes.Count - 1; i >= 0; i--) {
+			if (outTimes[i] > currentTime) {
+				nextOutTime = outTimes[i];
 				changed = true;
 			}
 		}
 		if (!changed) {
-			if (currentTime < currentTrack.endTime) nextOutTime = currentTrack.endTime;
+			if (currentTime < trackEndTime) nextOutTime = trackEndTime;
 			else nextOutTime = Mathf.Infinity;
 		}
 
@@ -288,21 +309,9 @@ public class MusicManager : MonoBehaviour {
 	}
 
 	private void CalculateEndTime() {
-		if (!currentTrack || !playing) {
-			currentTrack = null;
-			playing = false;
-			endTime = Mathf.Infinity;
-			cuedEndTime = false;
-			return;
-		}
+		if (currentTime < trackEndTime) endTime = trackEndTime;
+		else endTime = Mathf.Infinity;
 
-		if (currentTime < currentTrack.endTime) {
-			endTime = currentTrack.endTime;
-		} else {
-			playing = false;
-			endTime = Mathf.Infinity;
-			Debug.Log(currentTime);
-		}
 		cuedEndTime = false;
 	}
 
@@ -329,9 +338,7 @@ public class MusicManager : MonoBehaviour {
 
 		source.volume = 0f;
 
-		while (startTime > Time.unscaledTime) {
-			yield return null;
-		}
+		yield return new WaitForSecondsRealtime(waitTime);
 
 		while (startTime + fadeTime > Time.unscaledTime) {
 			currentTime = Time.unscaledTime - startTime;
@@ -365,9 +372,7 @@ public class MusicManager : MonoBehaviour {
 
 		source.volume = 1f;
 
-		while (startTime > Time.unscaledTime) {
-			yield return null;
-		}
+		yield return new WaitForSecondsRealtime(waitTime);
 
 		while (startTime + fadeTime > Time.unscaledTime) {
 			currentTime = Time.unscaledTime - startTime;
@@ -400,9 +405,7 @@ public class MusicManager : MonoBehaviour {
 		float startTime = Time.unscaledTime + waitTime;
 		float currentTime = 0f;
 
-		while (startTime > Time.unscaledTime) {
-			yield return null;
-		}
+		yield return new WaitForSecondsRealtime(waitTime);
 
 		while (startTime + fadeTime > Time.unscaledTime) {
 			currentTime = Time.unscaledTime - startTime;
@@ -435,9 +438,7 @@ public class MusicManager : MonoBehaviour {
 		float currentTime = 0f;
 		float startingVolume = source.volume;
 
-		while (startTime > Time.unscaledTime) {
-			yield return null;
-		}
+		yield return new WaitForSecondsRealtime(waitTime);
 
 		while (startTime + fadeTime > Time.unscaledTime) {
 			currentTime = Time.unscaledTime - startTime;
@@ -447,6 +448,12 @@ public class MusicManager : MonoBehaviour {
 		}
 
 		source.volume = newVolume;
+	}
+
+	IEnumerator WaitAndGenerateTuning(List<float> newTuning, float newRoot, float waitTime) {
+		yield return new WaitForSecondsRealtime(waitTime);
+
+		GenerateTuning(newTuning, newRoot);
 	}
 
 }

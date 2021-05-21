@@ -6,13 +6,13 @@ using UnityEditor;
 public class SFXTuned : SFXBase {
 	public float tuning;
 
-	public override AudioSource Play(GameObject target) { return AudioManager.Instance.PlaySoundSFX(target, SelectClip(), SelectPitch(), looping: loop); }
-	public override AudioSource Play(Vector3 target) { return AudioManager.Instance.PlaySoundSFX(target, SelectClip(), SelectPitch(), looping: loop); }
-	public override AudioSource Play() { return AudioManager.Instance.PlaySoundSFX(SelectClip(), SelectPitch(), looping: loop); }
+	public override AudioSource Play(GameObject target, float delay = 0) { return AudioManager.Instance.PlaySoundSFX(target, SelectClip(), SelectPitch(), looping: loop, delay: delay); }
+	public override AudioSource Play(Vector3 target, float delay = 0) { return AudioManager.Instance.PlaySoundSFX(target, SelectClip(), SelectPitch(), looping: loop, delay: delay); }
+	public override AudioSource Play(float delay = 0) { return AudioManager.Instance.PlaySoundSFX(SelectClip(), SelectPitch(), looping: loop, delay: delay); }
 
-	public AudioSource Play(GameObject target, float basePitch) { return AudioManager.Instance.PlaySoundSFX(target, SelectClip(), SelectPitch(basePitch), looping: loop); }
-	public AudioSource Play(Vector3 target, float basePitch) { return AudioManager.Instance.PlaySoundSFX(target, SelectClip(), SelectPitch(basePitch), looping: loop); }
-	public AudioSource Play(float basePitch) { return AudioManager.Instance.PlaySoundSFX(SelectClip(), SelectPitch(basePitch), looping: loop); }
+	public AudioSource Play(GameObject target, float basePitch, float delay = 0) { return AudioManager.Instance.PlaySoundSFX(target, SelectClip(), SelectPitch(basePitch), looping: loop, delay: delay); }
+	public AudioSource Play(Vector3 target, float basePitch, float delay = 0) { return AudioManager.Instance.PlaySoundSFX(target, SelectClip(), SelectPitch(basePitch), looping: loop, delay: delay); }
+	public AudioSource Play(float basePitch, float delay = 0) { return AudioManager.Instance.PlaySoundSFX(SelectClip(), SelectPitch(basePitch), looping: loop, delay: delay); }
 
 	protected float SelectPitch() {
 		float newPitchOffset = Mathf.Infinity;

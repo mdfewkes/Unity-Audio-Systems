@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11d8d62260ef06548bb07baa6a0b8c19, type: 3}
   m_Name: MuxBase Test 1
   m_EditorClassIdentifier: 
+  clip: {fileID: 8300000, guid: 01cf5937fcc1f5a4392227a2278d098e, type: 3}
   bpm: 120
-  startTime: 0
-  endTime: 8
+  trackStartTime: 0
+  trackEndTime: 8
   loop: 1
   outTimes:
   - 4

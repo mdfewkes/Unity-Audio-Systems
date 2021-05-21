@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 65498096e17100d41a4e880187090a92, type: 3}
-  m_Name: SFXTuned High
+  m_Name: SFXTuned 3.5
   m_EditorClassIdentifier: 
   clips:
-  - {fileID: 8300000, guid: 79933f8c6c4ba5b4491e418cc49b88da, type: 3}
+  - {fileID: 8300000, guid: e46c5d72831e02f4bb48809feadcdd52, type: 3}
   loop: 0
-  tuning: 10.5
+  tuning: 3.5

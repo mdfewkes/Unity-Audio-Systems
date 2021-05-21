@@ -8,9 +8,9 @@ public class SFXBase : ScriptableObject {
 	public List<AudioClip> clips;
 	public bool loop;
 
-	public virtual AudioSource Play(GameObject target) { return AudioManager.Instance.PlaySoundSFX(target, clip: SelectClip(), looping: loop); }
-	public virtual AudioSource Play(Vector3 target) { return AudioManager.Instance.PlaySoundSFX(target, clip: SelectClip(), looping: loop); }
-	public virtual AudioSource Play() { return AudioManager.Instance.PlaySoundSFX(clip: SelectClip(), looping: loop); }
+	public virtual AudioSource Play(GameObject target, float delay = 0) { return AudioManager.Instance.PlaySoundSFX(target, clip: SelectClip(), looping: loop, delay:delay); }
+	public virtual AudioSource Play(Vector3 target, float delay = 0) { return AudioManager.Instance.PlaySoundSFX(target, clip: SelectClip(), looping: loop, delay: delay); }
+	public virtual AudioSource Play(float delay = 0) { return AudioManager.Instance.PlaySoundSFX(clip: SelectClip(), looping: loop, delay: delay); }
 
 	protected AudioClip SelectClip() {
 		return clips[Random.Range(0, clips.Count)];
