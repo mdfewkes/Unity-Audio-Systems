@@ -20,7 +20,7 @@ public class MusicManager : MonoBehaviour {
 	public AudioClip clip;
 	public float bpm = 120f;
 	public float trackStartTime = 0f;
-	public float trackEndTime = Mathf.Infinity;
+	public float trackEndTime = float.MaxValue;
 	public bool loop = false;
 	public List<float> outTimes = new List<float>();
 	public List<ChordChange> changes = new List<ChordChange>();
@@ -33,9 +33,9 @@ public class MusicManager : MonoBehaviour {
 	public float nextQuarterBeat = 0f;
 	public float nextHalfBeat = 0f;
 	public float nextBeat = 0f;
-	public float nextChordChange = Mathf.Infinity;
-	public float nextOutTime = Mathf.Infinity;
-	public float endTime = Mathf.Infinity;
+	public float nextChordChange = float.MaxValue;
+	public float nextOutTime = float.MaxValue;
+	public float endTime = float.MaxValue;
 
 	public Action<float> CueBeat = (float delay) => { };
 	public Action<float> CueHalfBeat = (float delay) => { };
@@ -265,8 +265,9 @@ public class MusicManager : MonoBehaviour {
 
 	private void CalculateNextChordChange() {
 		if (changes.Count == 0) {
-			nextChordChange = Mathf.Infinity;
+			nextChordChange = float.MaxValue;
 			currentChordIndex = -1;
+			cuedChordChange = false;
 			return;
 		}
 
@@ -280,7 +281,7 @@ public class MusicManager : MonoBehaviour {
 		}
 		
 		if (!changed) {
-			nextChordChange = Mathf.Infinity;
+			nextChordChange = float.MaxValue;
 
 			if (currentTime < endTime) currentChordIndex = changes.Count - 1;
 			else currentChordIndex = -1;
@@ -293,6 +294,7 @@ public class MusicManager : MonoBehaviour {
 	private void CalculateNextOutTime() {
 		if (outTimes.Count == 0) {
 			nextOutTime = trackEndTime;
+			cuedOutTime = false;
 			return;
 		}
 		
@@ -305,7 +307,7 @@ public class MusicManager : MonoBehaviour {
 		}
 		if (!changed) {
 			if (currentTime < trackEndTime) nextOutTime = trackEndTime;
-			else nextOutTime = Mathf.Infinity;
+			else nextOutTime = float.MaxValue;
 		}
 
 		cuedOutTime = false;
@@ -313,7 +315,7 @@ public class MusicManager : MonoBehaviour {
 
 	private void CalculateEndTime() {
 		if (currentTime < trackEndTime) endTime = trackEndTime;
-		else endTime = Mathf.Infinity;
+		else endTime = float.MaxValue;
 
 		cuedEndTime = false;
 	}

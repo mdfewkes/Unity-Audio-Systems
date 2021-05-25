@@ -18,7 +18,7 @@ MonoBehaviour:
   trackEndTime: 4
   loop: 1
   outTimes:
-  - 4
+  - 2
   changes:
   - time: 0
     tuning:
