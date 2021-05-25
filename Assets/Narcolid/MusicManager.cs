@@ -172,6 +172,8 @@ public class MusicManager : MonoBehaviour {
 	}
 
 	public void ScheduleMux(MuxBase newTrack) {
+		if (newTrack == currentTrack) return;
+
 		if (currentTrack) {
 			scheduledTrack = newTrack;
 			trackPickupTime = newTrack.trackStartTime;

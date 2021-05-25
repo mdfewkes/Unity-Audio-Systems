@@ -172,14 +172,14 @@ public class AudioManager : MonoBehaviour {
 
 		source.volume = 1f;
 
-		while (startTime + fadeTime > Time.unscaledTime) {
+		while (startTime + fadeTime > Time.unscaledTime && source) {
 			currentTime = Time.unscaledTime - startTime;
 
 			source.volume = Mathf.Lerp(1f, 0f, currentTime / fadeTime);
 			yield return null;
 		}
 
-		source.Stop();
+		source?.Stop();
 		Destroy(source.gameObject);
 	}
 

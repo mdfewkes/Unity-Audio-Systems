@@ -9,12 +9,12 @@ public class BanjoTest : MonoBehaviour {
 
 	void OnMouseDown() {
 		playing = !playing;
-		if (playing) MusicManager.Instance.OnHalfBeat += PlayStrings;
-		else MusicManager.Instance.OnHalfBeat -= PlayStrings;
+		if (playing) MusicManager.Instance.CueHalfBeat += PlayStrings;
+		else MusicManager.Instance.CueHalfBeat -= PlayStrings;
 	}
 
-	public void PlayStrings() {
-		strings[index].Play();
+	public void PlayStrings(float delay) {
+		strings[index].Play(delay);
 		index = (index + 1) % strings.Length;
 	}
 }
