@@ -13,7 +13,14 @@ MonoBehaviour:
   m_Name: SFXFretted S3
   m_EditorClassIdentifier: 
   clips:
-  - {fileID: 8300000, guid: 632ba57ba0d1a9840af1fc30c806f857, type: 3}
+  - {fileID: 8300000, guid: 1482edd1133968f478dd00daacceed50, type: 3}
   loop: 0
-  tuning: 12
+  tuning: 8
+  clipListAndTuning:
+  - clips:
+    - {fileID: 8300000, guid: 1482edd1133968f478dd00daacceed50, type: 3}
+    tuning: 8
+  - clips:
+    - {fileID: 8300000, guid: 069a356eb71f8074a9802747d451f42c, type: 3}
+    tuning: 9
   openFretTuning: 7

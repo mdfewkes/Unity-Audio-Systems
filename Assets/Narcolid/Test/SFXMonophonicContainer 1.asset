@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c00cf9d3b46b55d458ba3b655081032b, type: 3}
+  m_Name: SFXMonophonicContainer 1
+  m_EditorClassIdentifier: 
+  clips: []
+  loop: 0
+  sfx: {fileID: 11400000, guid: 3af4070597fbc8a4f9073c1fc197003f, type: 2}
+  lastVoice: {fileID: 0}

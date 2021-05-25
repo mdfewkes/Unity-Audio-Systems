@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: SFXPitched 3rd
   m_EditorClassIdentifier: 
   clips:
-  - {fileID: 8300000, guid: 287cb2a722ab7ec4fbb6e6eef0c44065, type: 3}
+  - {fileID: 8300000, guid: 8fa1104150e7b4641ad02d98bee247f9, type: 3}
   loop: 0
-  tuning: 0
+  tuning: 6
   clipListAndTuning:
   - clips:
     - {fileID: 8300000, guid: 287cb2a722ab7ec4fbb6e6eef0c44065, type: 3}

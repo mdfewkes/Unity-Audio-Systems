@@ -14,13 +14,11 @@ public class SFXPitched : SFXTuned {
 	public float relativeTuning;
 
 	public override AudioSource Play(GameObject target, float delay = 0) { return base.Play(target, SelectBasePitch(), delay: delay); }
-
 	public override AudioSource Play(Vector3 target, float delay = 0) { return base.Play(target, SelectBasePitch(), delay: delay); }
-
 	public override AudioSource Play(float delay = 0) { return base.Play(SelectBasePitch(), delay: delay); }
 
 	protected float SelectBasePitch() {
-		tuning = 24f;
+		tuning = Mathf.Infinity;
 
 		float basePitch = MusicManager.Instance.root + relativeTuning;
 		if (basePitch >= 12) basePitch -= 12f;

@@ -474,7 +474,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60b89e85d59d6b7499dc8ee6fc4401bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sound: {fileID: 11400000, guid: 4bf5e48185fbead4e99a899e68e409bc, type: 2}
+  sound: {fileID: 11400000, guid: ac87da89d3439274d9834fd0f6847c96, type: 2}
 --- !u!65 &400396308
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -756,50 +756,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &731697017
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 731697019}
-  - component: {fileID: 731697018}
-  m_Layer: 0
-  m_Name: GameObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!114 &731697018
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 731697017}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f40bc0dfe97870c479d22d10989ddfd9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sound: {fileID: 11400000, guid: 6752601495d8e0c46a0f0baafebb9201, type: 2}
---- !u!4 &731697019
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 731697017}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.45345464, y: 0.84900045, z: -7.418173}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 16
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1029179558
 GameObject:
   m_ObjectHideFlags: 0
@@ -939,7 +895,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60b89e85d59d6b7499dc8ee6fc4401bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sound: {fileID: 11400000, guid: 61b523ab1692dfd47b0b681d063510b2, type: 2}
+  sound: {fileID: 11400000, guid: 45b24f44a1ccfd94492e95892708fb97, type: 2}
 --- !u!65 &1155529918
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1730,7 +1686,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60b89e85d59d6b7499dc8ee6fc4401bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sound: {fileID: 11400000, guid: 3af4070597fbc8a4f9073c1fc197003f, type: 2}
+  sound: {fileID: 11400000, guid: 9538803a0c24e18459847f3c8a4a9d5d, type: 2}
 --- !u!65 &1920551357
 BoxCollider:
   m_ObjectHideFlags: 0

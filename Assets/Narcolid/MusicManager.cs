@@ -128,7 +128,7 @@ public class MusicManager : MonoBehaviour {
 			OnOutTime();
 			CalculateNextOutTime();
 		}
-
+		
 		//End time
 		if (currentTime >= endTime - trackPickupTime - BufferTime && !cuedEndTime) {
 			cuedEndTime = true;
@@ -165,7 +165,10 @@ public class MusicManager : MonoBehaviour {
 		CalculateNextOutTime();
 		CalculateEndTime();
 
-		if (currentChordIndex >= 0 && changes.Count > 0) GenerateTuning(changes[0].tuning, changes[0].root);
+		if (currentChordIndex >= 0 && changes.Count > 0) {
+			GenerateTuning(changes[0].tuning, changes[0].root);
+			OnChordChange();
+		}
 	}
 
 	public void ScheduleMux(MuxBase newTrack) {
@@ -239,8 +242,8 @@ public class MusicManager : MonoBehaviour {
 	}
 
 	private void HandleEndTime(float cueTime) {
-		StartMux(currentTrack);
-		if (!loop) currentSource.volume = 0f;
+		if (currentTrack) StartMux(currentTrack);
+		if (!loop && currentSource) currentSource.volume = 0f;
 	}
 
 	//--//-----Calculate event times

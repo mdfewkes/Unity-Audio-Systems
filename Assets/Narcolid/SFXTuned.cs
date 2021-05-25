@@ -6,15 +6,39 @@ using UnityEditor;
 public class SFXTuned : SFXBase {
 	public float tuning;
 
-	public override AudioSource Play(GameObject target, float delay = 0) { return AudioManager.Instance.PlaySoundSFX(target, SelectClip(), SelectPitch(), looping: loop, delay: delay); }
-	public override AudioSource Play(Vector3 target, float delay = 0) { return AudioManager.Instance.PlaySoundSFX(target, SelectClip(), SelectPitch(), looping: loop, delay: delay); }
-	public override AudioSource Play(float delay = 0) { return AudioManager.Instance.PlaySoundSFX(SelectClip(), SelectPitch(), looping: loop, delay: delay); }
+	public override AudioSource Play(GameObject target, float delay = 0) {
+		AudioSource freshAudioSource = AudioManager.Instance.PlaySoundSFX(target, SelectClip(), SelectPitch(), looping: loop, delay: delay);
+		if (loop) freshAudioSource.gameObject.AddComponent<SFXTunedComponent>().sound = this;
+		return freshAudioSource;
+	}
+	public override AudioSource Play(Vector3 target, float delay = 0) {
+		AudioSource freshAudioSource = AudioManager.Instance.PlaySoundSFX(target, SelectClip(), SelectPitch(), looping: loop, delay: delay);
+		if (loop) freshAudioSource.gameObject.AddComponent<SFXTunedComponent>().sound = this;
+		return freshAudioSource;
+	}
+	public override AudioSource Play(float delay = 0) {
+		AudioSource freshAudioSource = AudioManager.Instance.PlaySoundSFX(SelectClip(), SelectPitch(), looping: loop, delay: delay);
+		if (loop) freshAudioSource.gameObject.AddComponent<SFXTunedComponent>().sound = this;
+		return freshAudioSource;
+	}
 
-	public AudioSource Play(GameObject target, float basePitch, float delay = 0) { return AudioManager.Instance.PlaySoundSFX(target, SelectClip(), SelectPitch(basePitch), looping: loop, delay: delay); }
-	public AudioSource Play(Vector3 target, float basePitch, float delay = 0) { return AudioManager.Instance.PlaySoundSFX(target, SelectClip(), SelectPitch(basePitch), looping: loop, delay: delay); }
-	public AudioSource Play(float basePitch, float delay = 0) { return AudioManager.Instance.PlaySoundSFX(SelectClip(), SelectPitch(basePitch), looping: loop, delay: delay); }
+	public AudioSource Play(GameObject target, float targetPitch, float delay = 0) {
+		AudioSource freshAudioSource = AudioManager.Instance.PlaySoundSFX(target, SelectClip(), SelectPitch(targetPitch), looping: loop, delay: delay);
+		if (loop) freshAudioSource.gameObject.AddComponent<SFXTunedComponent>().sound = this;
+		return freshAudioSource;
+	}
+	public AudioSource Play(Vector3 target, float targetPitch, float delay = 0) {
+		AudioSource freshAudioSource = AudioManager.Instance.PlaySoundSFX(target, SelectClip(), SelectPitch(targetPitch), looping: loop, delay: delay);
+		if (loop) freshAudioSource.gameObject.AddComponent<SFXTunedComponent>().sound = this;
+		return freshAudioSource;
+	}
+	public AudioSource Play(float targetPitch, float delay = 0) {
+		AudioSource freshAudioSource = AudioManager.Instance.PlaySoundSFX(SelectClip(), SelectPitch(targetPitch), looping: loop, delay: delay);
+		if (loop) freshAudioSource.gameObject.AddComponent<SFXTunedComponent>().sound = this;
+		return freshAudioSource;
+	}
 
-	protected float SelectPitch() {
+	public float SelectPitch() {
 		float newPitchOffset = Mathf.Infinity;
 
 		foreach (float interval in MusicManager.Instance.tuning) {
@@ -27,7 +51,7 @@ public class SFXTuned : SFXBase {
 		return newPitch;
 	}
 
-	protected float SelectPitch(float targetPitch) {
+	public float SelectPitch(float targetPitch) {
 		float newPitchOffset = Mathf.Infinity;
 		float foundPitch = Mathf.Infinity;
 
@@ -42,6 +66,32 @@ public class SFXTuned : SFXBase {
 		return newPitch;
 	}
 
+}
+
+public class SFXTunedComponent : MonoBehaviour {
+	public SFXTuned sound;
+
+	void Start() {
+		MusicManager.Instance.OnChordChange += Retune;
+	}
+
+	void OnDestroy() {
+		MusicManager.Instance.OnChordChange -= Retune;
+	}
+
+	private void Retune() {
+		AudioSource source = GetComponent<AudioSource>();
+		float newPitch = sound.SelectPitch();
+		if (source.pitch == newPitch) return;
+
+		AudioSource freshAudioSource = Instantiate(source);
+		freshAudioSource.transform.parent = transform;
+		freshAudioSource.time = source.time;
+		AudioManager.Instance.StartCoroutine(AudioManager.Instance.FadeOutAndStop(freshAudioSource));
+
+		AudioManager.Instance.StartCoroutine(AudioManager.Instance.FadeIn(source));
+		source.pitch = newPitch;
+	}
 }
 
 #if UNITY_EDITOR

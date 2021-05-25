@@ -10,5 +10,6 @@ public class TestTunning : MonoBehaviour
 	private void OnMouseDown()
 	{
 		MusicManager.Instance.GenerateTuning(tunning, root);
+		MusicManager.Instance.OnChordChange();
 	}
 }

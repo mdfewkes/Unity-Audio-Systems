@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11d8d62260ef06548bb07baa6a0b8c19, type: 3}
   m_Name: MuxBase Test 1
   m_EditorClassIdentifier: 
-  clip: {fileID: 8300000, guid: 01cf5937fcc1f5a4392227a2278d098e, type: 3}
+  clip: {fileID: 0}
   bpm: 120
   trackStartTime: 0
-  trackEndTime: 8
+  trackEndTime: 4
   loop: 1
   outTimes:
   - 4
@@ -23,28 +23,14 @@ MonoBehaviour:
   - time: 0
     tuning:
     - 0
-    - 4
-    - 7
-    - 11
+    - 4.364
+    - 7.09091
+    - 11.45455
     root: 0
   - time: 2
     tuning:
-    - 7
-    - 11
-    - 2
-    - 5
-    root: 7
-  - time: 4
-    tuning:
-    - 0
-    - 4
-    - 7
-    - 11
-    root: 0
-  - time: 6
-    tuning:
-    - 7
-    - 11
-    - 2
-    - 5
-    root: 7
+    - 7.09091
+    - 11.45455
+    - 2.18182
+    - 4.90909
+    root: 7.09091

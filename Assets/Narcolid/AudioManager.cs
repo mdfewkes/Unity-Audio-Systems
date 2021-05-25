@@ -24,16 +24,16 @@ public class AudioManager : MonoBehaviour {
 			VirtualAudioSource vas = source.GetComponent<VirtualAudioSource>();
 			if (vas.listener != vas.GetClosestListener()) {
 				VirtualAudioSource freshVAS = Instantiate(vas);
-				freshVAS.transform.parent = transform;
+				freshVAS.transform.parent = vas.transform;
 				freshVAS.listener = vas.listener;
 				Destroy(freshVAS.GetComponentInChildren<SFXSequenceComponent>());
 				freshVAS.GetComponent<AudioSource>().time = source.time;
-				StartCoroutine(FadeOutAndStop(freshVAS.GetComponent<AudioSource>(), FadeTime));
+				StartCoroutine(FadeOutAndStop(freshVAS.GetComponent<AudioSource>()));
 
 				vas.listener = vas.GetClosestListener();
 				float targetVolume = source.volume;
 				source.volume = 0f;
-				StartCoroutine(FadeTo(source, targetVolume, FadeTime));
+				StartCoroutine(FadeTo(source, targetVolume));
 			}
 
 			//--//--Update source ReverbZone
@@ -78,10 +78,6 @@ public class AudioManager : MonoBehaviour {
 		StartCoroutine(FadeOutAndStop(source, fadeTime));
 		loopingSources.Remove(source);
 	}
-
-	public AudioSource SwapSoundSFX () {
-		return null;
-	}
 	
 	public AudioSource PlaySoundUI(AudioClip clip, float pitch = 1f, float volume = 1f) {
 		AudioSource freshAudioSource = Instantiate(audioSourcePrefabUI);
@@ -98,7 +94,7 @@ public class AudioManager : MonoBehaviour {
 	}
 
 	//--//-----Volume automation
-	public IEnumerator FadeIn(AudioSource source, float fadeTime) {
+	public IEnumerator FadeIn(AudioSource source, float fadeTime = FadeTime) {
 		float startTime = Time.unscaledTime;
 		float currentTime = 0f;
 
@@ -114,7 +110,7 @@ public class AudioManager : MonoBehaviour {
 		source.volume = 1f;
 	}
 
-	public IEnumerator WaitAndFadeIn(AudioSource source, float waitTime, float fadeTime) {
+	public IEnumerator WaitAndFadeIn(AudioSource source, float waitTime, float fadeTime = FadeTime) {
 		float startTime = Time.unscaledTime + waitTime;
 		float currentTime = 0f;
 
@@ -134,7 +130,7 @@ public class AudioManager : MonoBehaviour {
 		source.volume = 1f;
 	}
 
-	public IEnumerator FadeOut(AudioSource source, float fadeTime) {
+	public IEnumerator FadeOut(AudioSource source, float fadeTime = FadeTime) {
 		float startTime = Time.unscaledTime;
 		float currentTime = 0f;
 
@@ -150,7 +146,7 @@ public class AudioManager : MonoBehaviour {
 		source.volume = 0f;
 	}
 
-	public IEnumerator WaitAndFadeOut(AudioSource source, float waitTime, float fadeTime) {
+	public IEnumerator WaitAndFadeOut(AudioSource source, float waitTime, float fadeTime = FadeTime) {
 		float startTime = Time.unscaledTime + waitTime;
 		float currentTime = 0f;
 
@@ -170,7 +166,7 @@ public class AudioManager : MonoBehaviour {
 		source.volume = 0f;
 	}
 
-	public IEnumerator FadeOutAndStop(AudioSource source, float fadeTime) {
+	public IEnumerator FadeOutAndStop(AudioSource source, float fadeTime = FadeTime) {
 		float startTime = Time.unscaledTime;
 		float currentTime = 0f;
 
@@ -187,7 +183,7 @@ public class AudioManager : MonoBehaviour {
 		Destroy(source.gameObject);
 	}
 
-	public IEnumerator WaitAndFadeOutAndStop(AudioSource source, float waitTime, float fadeTime) {
+	public IEnumerator WaitAndFadeOutAndStop(AudioSource source, float waitTime, float fadeTime = FadeTime) {
 		float startTime = Time.unscaledTime + waitTime;
 		float currentTime = 0f;
 
@@ -206,7 +202,7 @@ public class AudioManager : MonoBehaviour {
 		Destroy(source.gameObject);
 	}
 
-	public IEnumerator FadeTo(AudioSource source, float newVolume, float fadeTime) {
+	public IEnumerator FadeTo(AudioSource source, float newVolume, float fadeTime = FadeTime) {
 		float startTime = Time.unscaledTime;
 		float currentTime = 0f;
 		float startingVolume = source.volume;
@@ -221,7 +217,7 @@ public class AudioManager : MonoBehaviour {
 		source.volume = newVolume;
 	}
 
-	public IEnumerator WaitAndFadeTo(AudioSource source, float waitTime, float newVolume, float fadeTime) {
+	public IEnumerator WaitAndFadeTo(AudioSource source, float waitTime, float newVolume, float fadeTime = FadeTime) {
 		float startTime = Time.unscaledTime + waitTime;
 		float currentTime = 0f;
 		float startingVolume = source.volume;
