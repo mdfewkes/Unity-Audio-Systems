@@ -13,6 +13,18 @@ MonoBehaviour:
   m_Name: zone 4
   m_EditorClassIdentifier: 
   musicStems:
-  - {fileID: 11400000, guid: efa75989e8a2545479f5f06d16f2a24f, type: 2}
-  - {fileID: 11400000, guid: efa75989e8a2545479f5f06d16f2a24f, type: 2}
-  - {fileID: 11400000, guid: 3ba2e1864d924a24785ed9fdcc345a0e, type: 2}
+  - musicStem: {fileID: 8300000, guid: 5af3dbfa5da77e544b072cd4cd2d1885, type: 3}
+    loopingAsset: 1
+    bpm: 120
+    endTime: 2
+    outTimes:
+    - 1
+    fadeTime: 0
+  - musicStem: {fileID: 8300000, guid: d647f9f1280af344194cfc13fdd60daf, type: 3}
+    loopingAsset: 1
+    bpm: 120
+    endTime: 4
+    outTimes:
+    - 1
+    - 2
+    fadeTime: 0

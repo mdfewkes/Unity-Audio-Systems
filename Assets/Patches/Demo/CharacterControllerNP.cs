@@ -15,6 +15,7 @@ public class CharacterControllerNP : MonoBehaviour
 		float verticalInput = Input.GetAxis("Vertical");
 
 		//update the position
-		transform.position = transform.position + new Vector3(horizontalInput * movementSpeed * Time.deltaTime, 0, verticalInput * movementSpeed * Time.deltaTime);
+		//transform.position = transform.position + new Vector3(horizontalInput * movementSpeed * Time.deltaTime, 0, verticalInput * movementSpeed * Time.deltaTime);
+		transform.Translate(new Vector3(horizontalInput * movementSpeed * Time.deltaTime, 0, verticalInput * movementSpeed * Time.deltaTime));
 	}
 }

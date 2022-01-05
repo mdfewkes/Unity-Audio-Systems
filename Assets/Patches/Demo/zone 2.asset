@@ -13,4 +13,10 @@ MonoBehaviour:
   m_Name: zone 2
   m_EditorClassIdentifier: 
   musicStems:
-  - {fileID: 11400000, guid: 265161bf1fa1c334389d46a693f8f035, type: 2}
+  - musicStem: {fileID: 8300000, guid: 17ea7103405ba5f4c969cc8cb57c38a0, type: 3}
+    loopingAsset: 1
+    bpm: 120
+    endTime: 16
+    outTimes:
+    - 8
+    fadeTime: 0

@@ -14,13 +14,16 @@ public class PatchesMusicManager : MonoBehaviour {
 	private bool cueNewPool = false;
 	private bool hardOut = false;
 	
-	private float nextEndTime = 0f;
-	private float nextOutTime = 0f;
-	private float nextBeat = 0f;
+	private double nextEndTime = 0.0;
+	private double nextOutTime = 0.0;
+	private double nextBeat = 0.0;
+	private double currentTime = 0.0;
+
+	private double lookAhead = 0.25;
 
 	[SerializeField]
 	private PatchesMusicPool activePool;
-	private PatchesMusicTrack activeTrack;
+	private PatchesMusicPool.Track activeTrack;
 	private AudioSource activeSource;
 
 	private Stack<PatchesMusicPool> musicStack = new Stack<PatchesMusicPool>();
@@ -51,58 +54,64 @@ public class PatchesMusicManager : MonoBehaviour {
 	
 	void Update () {
 		if (!musicPlaying) return;
+		currentTime = AudioSettings.dspTime;
 
-		if (Time.time >= nextEndTime) {
-			if (activeTrack.looping) {
-				PatchesMusicTrack newTrack = ReturnNewTrack();
+		if (currentTime >= nextEndTime - lookAhead) {
+			if (activeTrack.loopingAsset) {
+				PatchesMusicPool.Track newTrack = ReturnNewTrack();
 				if (newTrack == activeTrack) {
 					SetNextEndTime();
 				} else {
-					FadeCurrentTrack();
-					PlayNewTrack(newTrack);
+					FadeCurrentTrack(nextEndTime - currentTime);
+					PlayNewTrack(newTrack, nextEndTime - currentTime);
+					SetNextEndTime();
 				}
 			} else {
 				float destroyTime = activeSource.clip.length - activeSource.time + Time.deltaTime;
 				Destroy(activeSource.gameObject, destroyTime);
-				PlayNewTrack();
+				PlayNewTrack(nextEndTime - currentTime);
+				SetNextEndTime();
 			}
 		}
-		if (Time.time >= nextOutTime) {
+		if (currentTime >= nextOutTime - lookAhead) {
 			if (cueNewPool) {
-				FadeCurrentTrack();
-				PlayNewTrack();
+				FadeCurrentTrack(nextOutTime - currentTime);
+				PlayNewTrack(nextOutTime - currentTime);
+				SetNextOutTime();
 			} else {
 				SetNextOutTime();
 			}
 		}
-		if (Time.time >= nextBeat) {
+		if (currentTime >= nextBeat - lookAhead) {
 			if (hardOut) {
-				FadeCurrentTrack();
-				PlayNewTrack();
+				FadeCurrentTrack(nextBeat - currentTime);
+				PlayNewTrack(nextBeat - currentTime);
 				hardOut = false;
+				SetNextBeat();
 			} else {
 				SetNextBeat();
 			}
 		}
+
 	}
 
 	public void StartMusic() {
 		if (!musicPlaying) {
-			PlayNewTrack();
+			PlayNewTrack(0.0);
 			musicPlaying = true;
 		}
 	}
 
 	public void StopMusic() {
 		if (musicPlaying) {
-			FadeCurrentTrack();
+			FadeCurrentTrack(0.0);
 			musicPlaying = false;
 		}
 	}
 
-	public void FadeOutMusic(float fadeTime) {
+	public void FadeOutMusic(float fadeTime = 0.15f) {
 		if (musicPlaying) {
-			StartCoroutine(FadeOutAndStop(activeSource, fadeTime));
+			StartCoroutine(WaitAndFadeOutAndStop(activeSource, 0f, fadeTime));
 			musicPlaying = false;
 		}
 	}
@@ -125,133 +134,99 @@ public class PatchesMusicManager : MonoBehaviour {
 		hardOut = true;
 	}
 
-	private void PlayNewTrack(PatchesMusicTrack newTrack) {
+	private void PlayNewTrack(PatchesMusicPool.Track newTrack, double waitTime) {
 		activeTrack = newTrack;
 
 		AudioSource freshMusicSource = Instantiate(musicAudioSourcePrefab).GetComponent<AudioSource>();
 		freshMusicSource.gameObject.transform.parent = gameObject.transform;
+		freshMusicSource.gameObject.name = activeTrack.musicStem.name;
 		freshMusicSource.clip = activeTrack.musicStem;
 		activeSource = freshMusicSource;
-		if (activeTrack.looping) activeSource.loop = true;
+		if (activeTrack.loopingAsset) activeSource.loop = true;
 
-		StartCoroutine(SetTimesWhenLoaded());
+		activeSource.PlayScheduled(AudioSettings.dspTime + waitTime);
 
-		activeSource.Play();
+		StartCoroutine(SetTimesWhenLoaded((float)waitTime));
 
 		cueNewPool = false;
 	}
 
-	private void PlayNewTrack() {
+	private void PlayNewTrack(double waitTime) {
 		activeTrack = ReturnNewTrack();
 
 		AudioSource freshMusicSource = Instantiate(musicAudioSourcePrefab).GetComponent<AudioSource>();
 		freshMusicSource.gameObject.transform.parent = gameObject.transform;
+		freshMusicSource.gameObject.name = activeTrack.musicStem.name;
 		freshMusicSource.clip = activeTrack.musicStem;
 		activeSource = freshMusicSource;
-		if (activeTrack.looping) activeSource.loop = true;
-		
-		StartCoroutine(SetTimesWhenLoaded());
+		if (activeTrack.loopingAsset) activeSource.loop = true;
 
-		activeSource.Play();
+		activeSource.PlayScheduled(AudioSettings.dspTime + waitTime);
+
+		StartCoroutine(SetTimesWhenLoaded((float)waitTime));
 
 		cueNewPool = false;
 	}
 
-	private void FadeCurrentTrack() {
-		StartCoroutine(FadeOutAndStop(activeSource, activeTrack.fadeTime));
+	private void FadeCurrentTrack(double waitTime) {
+		StartCoroutine(WaitAndFadeOutAndStop(activeSource, (float)waitTime, activeTrack.fadeTime));
 	}
 
-	private PatchesMusicTrack ReturnNewTrack() {
+	private PatchesMusicPool.Track ReturnNewTrack() {
 		return activePool.musicStems[Random.Range(0,activePool.musicStems.Length)];
 	}
 
 	private void SetNextEndTime() {
-		if (activeTrack.looping)
-			nextEndTime = activeSource.clip.length - activeSource.time + Time.time - Time.deltaTime;
+		if (activeTrack.loopingAsset)
+			nextEndTime = ((double)(activeSource.clip.samples - activeSource.timeSamples) / (double)activeSource.clip.frequency) + AudioSettings.dspTime;
 		else
-			nextEndTime = activeTrack.endTime - activeSource.time + Time.time - Time.deltaTime;
+			nextEndTime = (double)activeTrack.endTime - ((double)activeSource.timeSamples / (double)activeSource.clip.frequency) + AudioSettings.dspTime;
 	}
 
 	private void SetNextOutTime() {
 		bool changed = false;
 		for (int i = activeTrack.outTimes.Length - 1; i >= 0; i--) {
-			if (activeTrack.outTimes[i] > activeSource.time) {
-				nextOutTime = activeTrack.outTimes[i] - activeSource.time + Time.time - Time.deltaTime;
+			if (activeTrack.outTimes[i] > activeSource.time + lookAhead) {
+				nextOutTime = (double)activeTrack.outTimes[i] - ((double)activeSource.timeSamples / (double)activeSource.clip.frequency) + AudioSettings.dspTime;
 				changed = true;
 			}
 		}
 		if (!changed) {
-			nextOutTime = activeSource.clip.length + Time.time;
+			nextOutTime = ((double)activeSource.clip.samples / (double)activeSource.clip.frequency) + AudioSettings.dspTime;
 		}
 	}
 
 	private void SetNextBeat() {
-		nextBeat = activeSource.time % (60 / activeTrack.bpm) + Time.time + (60 / activeTrack.bpm) - Time.deltaTime;
+		if (60f / activeTrack.bpm <= lookAhead) activeTrack.bpm /= 2f;
+		nextBeat = (activeSource.time + lookAhead) % (60f / activeTrack.bpm) + AudioSettings.dspTime + (60f / activeTrack.bpm);
 	}
 
-	IEnumerator FadeOutAndStop(AudioSource source, float fadeTime) {
-		float startTime = Time.time;
+	IEnumerator WaitAndFadeOutAndStop(AudioSource source, float waitTime, float fadeTime) {
+		float startTime = Time.unscaledTime + waitTime;
 		float currentTime = 0f;
-		float startVolume = source.volume;
 
-		while (startTime + fadeTime > Time.time) {
-			currentTime = Time.time - startTime;
+		while (startTime > Time.unscaledTime) {
+			yield return null;
+		}
 
-			source.volume = Mathf.Lerp(startVolume, 0f, currentTime / fadeTime);
+		while (startTime + fadeTime > Time.unscaledTime) {
+			currentTime = Time.unscaledTime - startTime;
+
+			source.volume = Mathf.Lerp(1f, 0f, currentTime / fadeTime);
 			yield return null;
 		}
 
 		source.Stop();
 		Destroy(source.gameObject);
-
 	}
 
-	IEnumerator FadeOut(AudioSource source, float fadeTime) {
-		float startTime = Time.time;
-		float currentTime = 0f;
-		float startVolume = source.volume;
+	IEnumerator SetTimesWhenLoaded(float waitTime) {
+		float startTime = Time.unscaledTime + waitTime;
 
-		while (startTime + fadeTime > Time.time) {
-			currentTime = Time.time - startTime;
-
-			source.volume = Mathf.Lerp(startVolume, 0f, currentTime / fadeTime);
+		while (startTime > Time.unscaledTime) {
 			yield return null;
 		}
 
-		source.volume = 0f;
-
-	}
-
-	IEnumerator FadeIn(AudioSource source, float fadeTime) {
-		float startTime = Time.time;
-		float currentTime = 0f;
-		float startVolume = source.volume;
-
-		while (startTime + fadeTime > Time.time) {
-			currentTime = Time.time - startTime;
-
-			source.volume = Mathf.Lerp(startVolume, 1f, currentTime / fadeTime);
-			yield return null;
-		}
-
-		source.volume = 1f;
-
-	}
-
-	IEnumerator FadeTo(AudioSource source, float newVolume, float fadeTime) {
-		float startTime = Time.time;
-		float currentTime = 0f;
-		float startVolume = source.volume;
-
-		while (startTime + fadeTime > Time.time) {
-			currentTime = Time.time - startTime;
-
-			source.volume = Mathf.Lerp(startVolume, newVolume, currentTime / fadeTime);
-			yield return null;
-		}
-	}
-
-	IEnumerator SetTimesWhenLoaded(){
 		while (activeSource.clip.loadState != AudioDataLoadState.Loaded) {
 			yield return null;
 		}

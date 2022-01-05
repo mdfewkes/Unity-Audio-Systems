@@ -5,16 +5,16 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/DemoNavigator/Navigate.unity
     guid: 983972a44637cf04e979e51d83340ecf
   - enabled: 1
     path: Assets/Patches/Demo/DemoSceneNP.unity
     guid: 44062d512026a3c4b961277c0f9a79c5
-  - enabled: 1
+  - enabled: 0
     path: Assets/Crystal/Demo/DemoSceneRLC.unity
     guid: 99c9720ab356a0642a771bea13969a05
-  - enabled: 1
+  - enabled: 0
     path: Assets/PaperTpPail/Demo/DemoLevelPtP.unity
     guid: 188589519837a304093b5e6d18ec2725
   m_configObjects: {}

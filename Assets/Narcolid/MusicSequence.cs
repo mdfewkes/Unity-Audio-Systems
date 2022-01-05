@@ -36,7 +36,7 @@ public class MusicSequenceEvent {
 		Repeat
 	}
 }
-
+/*
 [CustomPropertyDrawer(typeof(MusicSequenceEvent))]
 public class MusicSequenceEventDrawer : PropertyDrawer {
 	public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
@@ -83,4 +83,4 @@ public class MusicSequenceEventDrawer : PropertyDrawer {
 
 		return height;
 	}
-}
+}*/

@@ -13,8 +13,32 @@ MonoBehaviour:
   m_Name: zone 1
   m_EditorClassIdentifier: 
   musicStems:
-  - {fileID: 11400000, guid: ec7380335077666449c225bad086dc2f, type: 2}
-  - {fileID: 11400000, guid: 669b69912d52634439bc25b0f1e3c78f, type: 2}
-  - {fileID: 11400000, guid: 797d43424717aef498ccfd9ccdc730a7, type: 2}
-  - {fileID: 11400000, guid: 797d43424717aef498ccfd9ccdc730a7, type: 2}
-  - {fileID: 11400000, guid: e49e002f45aad574999ac4e607bab6d9, type: 2}
+  - musicStem: {fileID: 8300000, guid: 6dfebdd9a95e3264d8bb599f5671dc1b, type: 3}
+    loopingAsset: 1
+    bpm: 120
+    endTime: 8
+    outTimes:
+    - 4
+    fadeTime: 0
+  - musicStem: {fileID: 8300000, guid: a41e0221dd9c1bb4b967996e32a182fb, type: 3}
+    loopingAsset: 1
+    bpm: 120
+    endTime: 8
+    outTimes: []
+    fadeTime: 0
+  - musicStem: {fileID: 8300000, guid: 8f4cdf724f5058944a6cbe3cf718eff6, type: 3}
+    loopingAsset: 1
+    bpm: 120
+    endTime: 8
+    outTimes:
+    - 2
+    - 4
+    - 6
+    fadeTime: 0
+  - musicStem: {fileID: 8300000, guid: b5e1bcb054b7e284787e9ae038154d7a, type: 3}
+    loopingAsset: 1
+    bpm: 120
+    endTime: 8
+    outTimes:
+    - 4
+    fadeTime: 0

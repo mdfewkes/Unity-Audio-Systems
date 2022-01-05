@@ -12,7 +12,7 @@ public class PatchesMusicRegion : MonoBehaviour {
 	public bool hardOutOnTriggerExit = false;
 
 	public PatchesMusicPool pool;
-	public PatchesMusicTrack[] tracks = new PatchesMusicTrack[0];
+	public PatchesMusicPool.Track[] tracks = new PatchesMusicPool.Track[0];
 
 	public LayerMask layers;
 
@@ -25,7 +25,7 @@ public class PatchesMusicRegion : MonoBehaviour {
 		else if (pool == null)
 		{
 			pool = new PatchesMusicPool();
-			pool.musicStems = new PatchesMusicTrack[tracks.Length];
+			pool.musicStems = new PatchesMusicPool.Track[tracks.Length];
 			pool.musicStems = tracks;
 		}
 	}
